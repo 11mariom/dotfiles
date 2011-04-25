@@ -165,7 +165,6 @@ pflv() {
 alias b="cd .."
 alias e=$EDITOR
 alias l="ls --color=auto"
-alias r="ssh mariom@rocik.net -t -p 51423 tmux attach -t mariom-irc"
 alias s="su"
 alias x="exit"
 
