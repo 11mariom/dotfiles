@@ -1,1 +1,3 @@
-/home/mario/.config/awesome/tmux_st
+#!/bin/sh
+
+tmux -2 att || tmux -2

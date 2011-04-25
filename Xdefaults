@@ -1,1 +1,58 @@
-/home/mario/.Xdefaults
+Xcursor.theme: DMZ
+
+urxvt*urgentOnBell: True
+urxvt*geometry: 80x25
+urxvt*loginShell:true
+urxvt*transparent:false
+urxvt*shading:40
+urxvt*background:#181818
+urxvt*foreground:#CACACA
+urxvt*scrollBar:false
+urxvt*saveLines:3000
+urxvt*termName:rxvt-unicode-256color
+urxvt*font:xft:Terminus:size=9:antialias=false
+
+urxvt*perl-ext-common:default,url-select,matcher
+urxvt*urlLauncher:/home/mario/fx4/firefox
+urxvt*undelineURLs:true
+urxvt*keysym.M-m:perl:url-select:select_next
+urxvt*matcher.button:1
+urxvt*matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+
+! ;; Black ;; ! ; #222222; #454545
+! urxvt*color0:  #202020 urxvt*color8:  #505050
+*color0:  #363636
+*color8:  #5e5e5e
+! ;;  Red  ;; ! ; #de6951; #c56a47
+urxvt*color1:  #992d22
+urxvt*color9:  #d0483a
+!*color1:  #f03669 *color9:  #c75b79
+! ;; Green ;; ! ; #bcda55; #0dbf60
+urxvt*color2:  #acd018
+urxvt*color10: #40b340
+! ;;Yellow ;; ! ; #e2a564; #ec8a25
+urxvt*color3:  #e8ca20
+urxvt*color11: #d9731f
+! ;; Blue  ;; ! ; #0071ff; #44a7ee || #2187f6; #5495dc
+urxvt*color4:  #009ad1
+urxvt*color12: #4cb4d9
+! ;;Magenta;; ! ; #9e6ffe; #b18cfe
+! urxvt*color5:  #875c8d urxvt*color13: #e41f66
+*color13:  #bd39a7
+*color5: #85006e
+! ;; Cyan  ;; ! ; #5e7175; #a3babf
+urxvt*color14:  #4390b1
+urxvt*color6: #276cc2
+! *color6:  #6fa9d3 *color14: #0078CE
+! ;; White ;; ! ; #cacaca; #ffffff
+urxvt*color7:  #d2d2d2
+urxvt*color15: #ffffff
+
+urxvt*colorBD:#FFFFFF
+
+!urxvt*backgroundPixmap: /home/mario/wallpaper.png;0x0+50+50:root
+urxvt*depth: 32
+!urxvt*background: rgba:0000/0000/0000/bbbb
+
+urxvt*cutchars: `"()'<>[]{|}"
+

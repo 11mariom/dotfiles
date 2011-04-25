@@ -1,1 +1,8 @@
-/home/mario/.config/awesome/mpd_cfg
+h="127.0.0.1"
+p="6000"
+f="%artist%\n%title%\n%album%"
+c="$HOME/.config/ario/covers"
+
+
+
+

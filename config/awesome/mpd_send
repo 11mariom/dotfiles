@@ -1,1 +1,10 @@
-/home/mario/.config/awesome/mpd_send
+#!/bin/sh
+
+source /home/mario/.config/awesome/mpd_cfg
+
+mpd_send () {
+    echo "naughty.notify({title = \"${info[0]}\",\
+ text = \"${info[1]}\n\n${state}\",\
+ icon = \"${cover}\", icon_size = 96,\
+ timeout = 10})" | awesome-client
+}

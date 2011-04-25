@@ -1,1 +1,12 @@
-/home/mario/.config/awesome/widgets
+#!/bin/sh
+
+while [ 1 ]
+do
+    count=$(elinks -dump "http://rss.mariom.tk/backend.php?op=getUnread&login=mariom" | awk '{sub(/^[ \t]+/, "")};1' )
+    echo "rss.text = \"  ${count} news  \"" | awesome-client
+
+    updates=$(eix -uc | awk 'END{print $2,"updates"}')
+    echo "pkg.text = \"  ${updates}  \"" | awesome-client
+
+    sleep 5m
+done

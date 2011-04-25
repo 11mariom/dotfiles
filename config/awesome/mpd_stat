@@ -1,1 +1,13 @@
-/home/mario/.config/awesome/mpd_stat
+#!/bin/sh
+
+source /home/mario/.config/awesome/mpd_cfg
+
+mpd_status () {
+    command=$(mpc -h ${h} -p ${p} -f ${f})
+                        # [0] - Artist  [3] - status
+    IFS=$'\n'           # [1] - Title   [4] - useless info
+    info=( ${command} ) # [2] - Album
+    cover="${c}/${info[0]}-${info[2]}.jpg"
+    state=$( expr "${info[3]}" : '\(.*\]\)' )
+}
+

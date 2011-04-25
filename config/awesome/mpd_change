@@ -1,1 +1,13 @@
-/home/mario/.config/awesome/mpd_change
+#!/bin/sh
+
+source /home/mario/.config/awesome/mpd_cfg
+source /home/mario/.config/awesome/mpd_stat
+source /home/mario/.config/awesome/mpd_send
+
+mpc -h ${h} -p ${p} ${1}
+
+if [ ${1} != "next" ] && [ ${1} != "prev" ]
+then
+    mpd_status
+    mpd_send
+fi

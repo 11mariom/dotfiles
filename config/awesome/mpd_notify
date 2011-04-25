@@ -1,1 +1,30 @@
-/home/mario/.config/awesome/mpd_notify
+#!/bin/sh
+
+source /home/mario/.config/awesome/mpd_cfg
+source /home/mario/.config/awesome/mpd_stat
+source /home/mario/.config/awesome/mpd_send
+
+IFSb=$IFS
+old=""
+
+while(true)
+do
+    mpd_status
+
+    new="${info[0]}-${info[1]}"
+    
+    if [ ${new} != ${old} ]
+    then
+	mpd_send
+    fi
+
+    old=${new}
+    # IFS=$IFSb
+    # declare -a time
+    # time=( $( echo ${info[3]} | awk '{gsub(/\//, " ");print $5,$4}') )
+    # tt=$(( $( date -d 00:${time[0]} +%s ) - $( date -d 00:${time[1]} +%s ) + 2 ))
+
+    # mpd_send
+    # sleep $tt
+    sleep 1s
+done
