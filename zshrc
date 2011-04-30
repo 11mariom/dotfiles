@@ -7,17 +7,24 @@ autoload -U colors
 colors
 autoload -U compinit
 compinit
+autoload edit-command-line
+zle -N edit-command-line
+autoload zmv
 
 ##
 # setopt
-setopt complete_in_word 
-setopt correct correctall
-setopt chasedots
-setopt zle emacs
-setopt checkjobs
-setopt autocd 
-setopt appendhistory 
+setopt autocd              # dirs
+setopt chasedots           # glob
+setopt globdots
+setopt appendhistory       # history
 setopt extendedhistory
+setopt checkjobs           # jobs
+setopt nobeep              # no beeping
+setopt complete_in_word    # complete
+setopt correct correctall  # correct
+setopt zle emacs
+
+
 
 ##
 # export
@@ -149,6 +156,11 @@ bindkey '^[[7~' beginning-of-line
 bindkey '^[[8~' end-of-line
 bindkey '^[[5~' up-line-or-search
 bindkey '^[[6~' down-line-or-search
+bindkey '^B'    emacs-backward-word
+bindkey '^F'    emacs-forward-word
+bindkey '^[b'   backward-char
+bindkey '^[f'   forward-char
+bindkey '^N'    edit-command-line
 bindkey -e
 
 ##
