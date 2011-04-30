@@ -9,6 +9,9 @@ alias e=$EDITOR
 alias l="ls $_OPTIONS"
 alias s="su"
 alias x="exit"
+alias zcp="zmv -wC"
+alias zln="zmv -wL"
+alias zmv="zmv -wM"
 
 ##
 # default options
