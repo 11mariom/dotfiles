@@ -6,5 +6,6 @@ case $1 in
 	;;
     *)
 	exec awesome
+	;;
 esac
 
