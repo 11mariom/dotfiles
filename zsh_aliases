@@ -1,0 +1,32 @@
+##
+# variable
+_OPTIONS="--color=auto"
+
+##
+# alias
+alias b="cd .."
+alias e=$EDITOR
+alias l="ls $_OPTIONS"
+alias s="su"
+alias x="exit"
+
+##
+# default options
+alias ebuild="FEATURES=-mini-manifest ebuild"
+alias grep="grep $_OPTIONS"
+alias ls="ls $_OPTIONS"
+alias tmux="tmux -2"
+
+## 
+# global alias
+alias -g G="| grep"
+alias -g H="| head"
+alias -g L="| less"
+alias -g T="| tail"
+
+##
+# dirs
+hash -d t="/home/mario/tmp"
+hash -d D="/media/Dane"
+hash -d cdrom="/media/cdrom"
+hash -d torrents="/media/Dane/Torrents"
