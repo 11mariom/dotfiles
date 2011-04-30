@@ -91,8 +91,8 @@ esac
 ##
 # git info for prompt
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr " $YELLOW✗"
-zstyle ':vcs_info:*' stagedstr " $BGREEN✔"
+zstyle ':vcs_info:*' unstagedstr " %F{3}✗"
+zstyle ':vcs_info:*' stagedstr " %F{2}✔"
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' branchformat "%b:%r"
 
