@@ -28,7 +28,7 @@ setopt zle emacs
 ##
 # export
 export EDITOR="emacsclient --alternate-editor='' -c -nw "
-path=$PATH":/usr/games/bin/:/opt/bin/:/home/mario/bin/"
+path=$PATH":/usr/games/bin/:/opt/bin/:~/bin/"
 export PATH=$path
 
 # colorful manpages in less
@@ -46,11 +46,11 @@ export GROFF_NO_SGR=1
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
 [ -f ~/.zsh_functions ] && . ~/.zsh_functions
 
-if [[ -f /home/mario/.dircolors-256 ]] & [[ -f /home/mario/.dircolors-8 ]]; then
+if [[ -f ~/.dircolors-256 ]] & [[ -f ~/.dircolors-8 ]]; then
     [ $(tput colors) = 256 ] &&\
-       eval $( dircolors -b /home/mario/.dircolors-256 )
+       eval $( dircolors -b ~/.dircolors-256 )
     [ $(tput colors) != 256 ] &&\
-       eval $( dircolors -b /home/mario/.dircolors-8 )
+       eval $( dircolors -b ~/.dircolors-8 )
 fi
 
 ##

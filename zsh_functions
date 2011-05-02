@@ -61,5 +61,5 @@ welcome() {
 	*) mc="`date +'%B'`"
     esac
 
-    echo "Witaj mariom. Jest $(date +'%H:%M'), $(date +'%A %d') $mc, $(date +'%j dzień roku %Y')."
+    echo "Witaj $USER. Jest $(date +'%H:%M'), $(date +'%A %d') $mc, $(date +'%j dzień roku %Y')."
 }

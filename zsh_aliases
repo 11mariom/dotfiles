@@ -29,7 +29,7 @@ alias -g T="| tail"
 
 ##
 # dirs
-hash -d t="/home/mario/tmp"
+hash -d t="~/tmp"
 hash -d D="/media/Dane"
 hash -d cdrom="/media/cdrom"
 hash -d torrents="/media/Dane/Torrents"
