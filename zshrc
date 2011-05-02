@@ -150,8 +150,8 @@ zstyle ':comlpetion:*:expand:*' tag-order all-expansions
 zstyle ':completion:*:*:kill:*:processes' list-colors\
                     "=(#b) #([0-9]#)*=0=01;31"
 zstyle ':completion:*:*:kill:*:processes' command\
-                    "ps --forest -A -o pid,user,cmd"
-zstyle ':completion:*:processes-names' coomand "ps axho command"
+                    "ps -u $USER --forest -o pid,user,cmd"
+zstyle ':completion:*:processes-names' command "ps -u $USER axho command"
 
 ##
 # bind
