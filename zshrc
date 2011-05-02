@@ -16,6 +16,7 @@ autoload zmv
 setopt autocd              # dirs
 setopt chasedots           # glob
 setopt globdots
+setopt extendedglob
 setopt appendhistory       # history
 setopt extendedhistory
 setopt checkjobs           # jobs
@@ -24,11 +25,11 @@ setopt complete_in_word    # complete
 setopt correct correctall  # correct
 setopt zle emacs
 
-
-
 ##
 # export
 export EDITOR="emacsclient --alternate-editor='' -c -nw "
+path=$PATH":/usr/games/bin/:/opt/bin/:/home/mario/bin/"
+export PATH=$path
 
 # colorful manpages in less
 export LESS_TERMCAP_mb=$'\e[1;35m'
@@ -122,9 +123,11 @@ PROMPT="%{$bg[black]%}$BWHITE%3~ %(!,$BRED#,$BGREEN\$)$NO_COLOR "
 zstyle ':completion:*' completer _list _oldlist _match _prefix\
        _expand _complete _ignored _correct _approximate 
 zstyle ':completion:*' glob "yes"
-zstyle ':completion:*' menu select=1
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' verbose 'yes'
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' verbose "yes"
+zstyle ':completion:*:-command-:*:' verbose "no"
+zstyle ':completion:*:approximate:::' max-errors 3
 zstyle ':completion:*:descriptions' format "%B-- %d --%b"
 zstyle ':completion:*:messages' format\
                     "%B--${GREEN} %d ${WHITE}--%b"
@@ -133,8 +136,9 @@ zstyle ':completion:*:warnings' format\
 zstyle ':completion:*:corrections' format\
                     "%B--${YELLOW} %d ${WHITE}-- (errors %e)%b"
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:manuals' separate-section "yes"
-zstyle ':completion:*:options' description "yes"
+zstyle ':completion:*:manuals' separate-sections "yes"
+zstyle ':completion:*:manuals.(^1*)' insert-sections "yes"
+zstyle ':completion:*:options' descriptions "yes"
 zstyle ':completion:*:options' auto-description "%d"
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' add-space true
@@ -161,6 +165,7 @@ bindkey '^F'    emacs-forward-word
 bindkey '^[b'   backward-char
 bindkey '^[f'   forward-char
 bindkey '^N'    edit-command-line
+bindkey '^K'    kill-line
 bindkey -e
 
 ##
