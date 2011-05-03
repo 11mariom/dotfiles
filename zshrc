@@ -143,7 +143,8 @@ zstyle ':completion:*:options' auto-description "%d"
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' add-space true
 zstyle ':completion:*' file-sort name
-zstyle ':comlpetion:*:expand:*' tag-order all-expansions
+zstyle ':completion:*:expand:*' tag-order all-expansions
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 ##
 # kill completion
