@@ -28,7 +28,7 @@ setopt zle emacs
 ##
 # export
 export EDITOR="emacsclient --alternate-editor='' -c -nw "
-path=$PATH":/usr/games/bin/:/opt/bin/:~/bin/"
+path=$PATH":/usr/games/bin/:/opt/bin/:$HOME/bin"
 export PATH=$path
 
 # colorful manpages in less
