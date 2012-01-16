@@ -5,7 +5,7 @@ urxvt*geometry: 80x25
 urxvt*loginShell:true
 urxvt*transparent:false
 urxvt*shading:40
-urxvt*background:#181818
+!urxvt*background:#181818
 urxvt*foreground:#CACACA
 urxvt*scrollBar:false
 urxvt*saveLines:3000
@@ -13,7 +13,7 @@ urxvt*termName:rxvt-unicode-256color
 urxvt*font:xft:Terminus:size=9:antialias=false
 
 urxvt*perl-ext-common:default,url-select,matcher
-urxvt*urlLauncher:/home/mario/fx4/firefox
+urxvt*urlLauncher:/home/mario/bin/firefox-bin
 urxvt*undelineURLs:true
 urxvt*keysym.M-m:perl:url-select:select_next
 urxvt*matcher.button:1
@@ -52,7 +52,7 @@ urxvt*colorBD:#FFFFFF
 
 !urxvt*backgroundPixmap: /home/mario/wallpaper.png;0x0+50+50:root
 urxvt*depth: 32
-!urxvt*background: rgba:0000/0000/0000/bbbb
+urxvt*background: rgba:0000/0000/0000/bbbb
 
 urxvt*cutchars: `"()'<>[]{|}"
 

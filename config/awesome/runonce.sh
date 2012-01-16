@@ -1,19 +1,23 @@
 #!/bin/bash
-aw="/home/mario/.config/awesome"
+aw="$HOME/.config/awesome"
+notify="$HOME/dev/bash/bashnotify/"
 
 numlockx &
 
-if [ ! $(pidof urxvtd) ]; then
+if [[ ! $(pidof urxvtd) ]]; then
     urxvtd -q -f -o &&
 
-    urxvtc -e ncmpcpp; urxvtc -e sh ${aw}/tmux_st; urxvtc
+    urxvtc -e sh ${aw}/tmux_st ${aw}; urxvtc
 fi
 
-if [ ! $(pidof firefox-bin) ]; then
-    $HOME/fx4/firefox &
+if [[ ! $(pidof firefox) ]]; then
+    $HOME/bin/firefox-bin &
 fi
 
-killall -9 mpd_notify 
-${aw}/mpd_notify &
+if [[ ! $(pidof xcompmgr) ]]; then
+    xcompmgr -cfF -r4.2 -o.67 -l-5 -t-5 -D5 &
+fi
+
+${notify}/bashnotifystart.sh restart &
 killall -9 widgets
 ${aw}/widgets &

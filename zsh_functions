@@ -43,23 +43,6 @@ pflv() {
 ##
 # welcome
 welcome() {
-    B="`date +'%B'`" 
-
-    case "$B" in
-	"styczeń") export mc='stycznia' ;;
-	"luty") export mc='lutego' ;;
-	"marzec") export mc='marca' ;;
-	"kwiecień") export mc='kwietnia' ;;
-	"maj") export mc='maja' ;;
-	"czerwiec") export mc='czerwca' ;;
-	"lipiec") export mc='lipca' ;;
-	"sierpień") export mc='sierpnia' ;;
-	"wrzesień") export mc='września' ;;
-	"październik") export mc='października' ;;
-	"listopad") export mc='listopada' ;;
-	"grudzień") export mc='grudnia' ;;
-	*) mc="`date +'%B'`"
-    esac
-
-    echo "Witaj $USER. Jest $(date +'%H:%M'), $(date +'%A %d') $mc, $(date +'%j dzień roku %Y')."
+    echo "Cytat na $(date +'%j dzień roku %Y'):"
+    /home/mario/dev/bash/fortunes/wikicytat.sh
 }

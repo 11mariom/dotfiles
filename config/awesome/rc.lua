@@ -18,10 +18,13 @@ beautiful.init("/home/mario/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtc"
-browser = "/home/mario/fx4/firefox"
+browser = "/home/mario/bin/firefox-bin"
 mpds = "/home/mario/.config/awesome/"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
+
+-- naughty cfg (!)
+naughty.config.default_preset.opacity = .85
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -59,7 +62,7 @@ shifty.config.tags = {
 
 shifty.config.apps = {
    { match = { "" }, tag = "2:rest" },
-   { match = { "Minefield", "Nightly", "urxvt" }, tag = "1:main", },
+   { match = { "Navigator", "Minefield", "Nightly", "urxvt" }, tag = "1:main", minimized = false, },
    { match = { "urxvt"     }, slave = true, },
    { match = { "Mplayer"   }, tag = "2:movie", },
    { match = { "Gimp"      }, tag = "2:gimp", },
@@ -104,21 +107,6 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 
 -- {{{ Wibox
 -- Create a textclock widget
---mytextclock = awful.widget.textclock({ align = "right" })
-
---mpdtext = widget({ type = "textbox" })
---vicious.register(mpdtext, vicious.widgets.mpd, args["{state}"], 1, nil, "127.0.0.1", "6000")
-
-
---membar = awful.widget.progressbar()
---membar:set_width(7)
---membar:set_height(14)
---membar:set_vertical(true)
---membar:set_background_color("#494b4f")
---membar:set_border_color("#cacaca")
---membar:set_color("#aecf96")
---vicious.register(membar, vicious.widgets.mem, "$1", 10)
-
 -- Create a systray
 -- mysystray = widget({ type = "systray" })
 
@@ -135,59 +123,42 @@ mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 4, awful.tag.viewnext),
                     awful.button({ }, 5, awful.tag.viewprev)
                     )
+
 mytasklist = {}
-mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if not c:isvisible() then
-                                                  awful.tag.viewonly(c:tags()[1])
-                                              end
-                                              client.focus = c
-                                              c:raise()
-                                          end),
-                     awful.button({ }, 3, function ()
-                                              if instance then
-                                                  instance:hide()
-                                                  instance = nil
-                                              else
-                                                  instance = awful.menu.clients({ width=250 })
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
-
-clocki = widget({ type = "imagebox" })
-clocki.image = image("/home/mario/.config/awesome/tray/clocki.png")
+--clocki = widget({ type = "imagebox" })
+--clocki.image = image("/home/mario/.config/awesome/tray/clocki.png")
+clocki = widget({ type = "textbox" })
+clocki.text = '<span color="#d5fc0d">TIME</span>'
 mytextclock = widget({ type = "textbox" })
-vicious.register(mytextclock, vicious.widgets.date, "  %H:%M  ", 60)
+vicious.register(mytextclock, vicious.widgets.date, "%H:%M", 60)
 
-memi = widget({ type = "imagebox" })
-memi.image = image("/home/mario/.config/awesome/tray/memi.png")
-memtext = widget({ type = "textbox" })
-vicious.register(memtext, vicious.widgets.mem, "  $2MB  ", 10)
+--memi = widget({ type = "imagebox" })
+--memi.image = image("/home/mario/.config/awesome/tray/memi.png")
+--memi = widget({ type = "textbox" })
+--memi.text = '<span color="#d5fc0d">MEM</span>'
+--memtext = widget({ type = "textbox" })
+--vicious.register(memtext, vicious.widgets.mem, "$2MB", 10)
 
-cpui = widget({ type = "imagebox" })
-cpui.image = image("/home/mario/.config/awesome/tray/cpui.png")
-cputext = widget({ type = "textbox" })
-vicious.register(cputext, vicious.widgets.cpu, "  $1%  ", 1)
+--cpui = widget({ type = "imagebox" })
+--cpui.image = image("/home/mario/.config/awesome/tray/cpui.png")
+--cputext = widget({ type = "textbox" })
+--vicious.register(cputext, vicious.widgets.cpu, "$1%", 1)
 
-maili = widget({ type = "imagebox" })
-maili.image = image("/home/mario/.config/awesome/tray/maili.png")
-vicious.cache(vicious.widgets.gmail)
+--maili = widget({ type = "imagebox" })
+--maili.image = image("/home/mario/.config/awesome/tray/maili.png")
+maili = widget({ type = "textbox" })
+maili.text = '<span color="#d5fc0d">MAIL</span>'
 mail = widget({ type = "textbox" })
-vicious.register(mail, vicious.widgets.gmail, "  ${count} mails  ", 60)
+mail.text = "-"
 
-mpdi = widget({ type = "imagebox" })
-mpdi.image = image("/home/mario/.config/awesome/tray/mpdi.png")
+--mpdi = widget({ type = "imagebox" })
+--mpdi.image = image("/home/mario/.config/awesome/tray/mpdi.png")
+mpdi = widget({ type = "textbox" })
+mpdi.text = '<span color="#d5fc0d">MPD</span>'
 vicious.cache(vicious.widgets.mpd)
 mpdc = { nil, "127.0.0.1", "6000" }
 mpd = widget({ type = "textbox" })
-vicious.register(mpd, vicious.widgets.mpd, "  ${Artist} - ${Title}  ", 1, mpdc)
+vicious.register(mpd, vicious.widgets.mpd, "${Artist} - ${Title}", 1, mpdc)
 mpd:buttons(awful.util.table.join( 
       awful.button({ }, 1, 
 	    function () awful.util.spawn_with_shell(mpds .. "mpd_change toggle") end),
@@ -197,26 +168,35 @@ mpd:buttons(awful.util.table.join(
 	    function () awful.util.spawn_with_shell(mpds .. "mpd_change next") end)
 	 ))
 
-weai = widget({ type = "imagebox" })
-weai.image = image("/home/mario/.config/awesome/tray/weai.png")
-vicious.cache(vicious.widgets.weather)
-wea = widget({ type = "textbox" })
-vicious.register(wea, vicious.widgets.weather, "  ${tempc}&#176;C  ", 60, "EPSC")
+--weai = widget({ type = "imagebox" })
+--weai.image = image("/home/mario/.config/awesome/tray/weai.png")
+--vicious.cache(vicious.widgets.weather)
+--wea = widget({ type = "textbox" })
+--vicious.register(wea, vicious.widgets.weather, "  ${tempc}&#176;C  ", 60, "EPSC")
 
-pkgi = widget({ type = "imagebox" })
-pkgi.image = image("/home/mario/.config/awesome/tray/pkgi.png")
+--pkgi = widget({ type = "imagebox" })
+--pkgi.image = image("/home/mario/.config/awesome/tray/pkgi.png")
+pkgi = widget({ type = "textbox" })
+pkgi.text = '<span color="#d5fc0d">PKG</span>'
 pkg = widget({ type = "textbox" })
-pkg.text = "  -  "
+pkg.text = "-"
 
-rssi = widget({ type = "imagebox" })
-rssi.image = image("/home/mario/.config/awesome/tray/rssi.png")
+--rssi = widget({ type = "imagebox" })
+--rssi.image = image("/home/mario/.config/awesome/tray/rssi.png")
+rssi = widget({ type = "textbox" })
+rssi.text = '<span color="#d5fc0d">RSS</span>'
 rss = widget({ type = "textbox" })
-rss.text = "  -  "
+rss.text = "-"
 
-voli = widget({ type = "imagebox" })
-voli.image = image("/home/mario/.config/awesome/tray/voli.png")
+separator = widget({ type = "textbox" })
+separator.text = "  "
+
+--voli = widget({ type = "imagebox" })
+--voli.image = image("/home/mario/.config/awesome/tray/voli.png")
+voli = widget({ type = "textbox" })
+voli.text = '<span color="#d5fc0d">VOL</span>'
 vol = widget({ type = "textbox" })
-vicious.register(vol, vicious.widgets.volume, "  $1%  ", 2, "Master")
+vicious.register(vol, vicious.widgets.volume, "$1%", 2, "Master")
 vol:buttons(awful.util.table.join(
 	       awful.button({ }, 2, function () awful.util.spawn("mute") end),
 	       awful.button({ }, 4, function () 
@@ -234,30 +214,31 @@ for s = 1, screen.count() do
              --awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
              --awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
+    mytasklist[s] = awful.widget.tasklist(function(c)
+		     return awful.widget.tasklist.label.focused(c, s, 
+						   { bg_focus = "#121212",
+						     fg_focus = "#fefefe" }) end )
 
-    --mytasklist[s] = awful.widget.tasklist(function(c)
-    --                   return awful.widget.tasklist.label.currenttags(c, s)
-    --                                      end, mytasklist.buttons)
-
-    mywibox[s] = awful.wibox({ position = "top", screen = s, height = "12" })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, height = "12", 
+			    opacity = .9 })
     mywibox[s].widgets = {
         {
             --mylauncher,
-            mytaglist[s],
-            mypromptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
+	   mytaglist[s],
+	   mypromptbox[s], separator,
+	   layout = awful.widget.layout.horizontal.leftright
         },
 	--mylayoutbox[s],
-	mytextclock, clocki,
-	memtext, memi,
-	cputext, cpui,
-	pkg, pkgi,
-	wea, weai,
-	mail, maili,
-	rss, rssi, 
-	vol, voli,
-	mpd, mpdi, 
-	--mytasklist[s],
+	separator,
+	mytextclock, separator, clocki, separator,
+	--memtext, separator, memi, separator,
+	--cputext, separator, cpui, separator,
+	pkg, separator, pkgi, separator,
+	mail, separator, maili, separator,
+	rss, separator, rssi, separator,
+	vol, separator, voli, separator,
+	mpd, separator, mpdi, separator,
+	mytasklist,
 	layout = awful.widget.layout.horizontal.rightleft
     }
 end
@@ -389,7 +370,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
     awful.key({ modkey,           }, "m",
         function (c)
@@ -432,25 +413,15 @@ client.add_signal("manage", function (c, startup)
 end)
 
 client.add_signal("focus", function(c) 
-	c.border_color = beautiful.border_focus 
+--	c.border_width = beautiful.border_width
+	c.border_color = beautiful.border_focus
 	c.opacity = 1
  end)
 client.add_signal("unfocus", function(c) 
-	c.border_color = beautiful.border_normal 
-	c.opacity = 0.85
+--	c.border_width = "2"
+	c.border_color = beautiful.border_normal
+	c.opacity = 0.9
  end)
 -- }}}
 
 awful.util.spawn_with_shell("/home/mario/.config/awesome/runonce.sh")
---awful.util.spawn_with_shell("numlockx")
---awful.util.spawn("cairo-compmgr")
---awful.util.spawn("urxvtd -q -f -o")
---awful.util.spawn(browser)
---awful.util.spawn_with_shell("sleep 2 && " .. terminal .. " -e ncmpcpp")
---awful.util.spawn_with_shell("sleep 2 && " .. terminal .. " -e sh /home/mario/.config/awesome/tmux_st")
---awful.util.spawn_with_shell("sleep 2 && " .. terminal .. " -e ssh mariom@rocik.net -p 122 tmux attach -t mariom-irc")
---awful.util.spawn_with_shell("sleep 2 && " .. terminal)
-
---awful.util.spawn_with_shell("/home/mario/.config/awesome/widgets")
---awful.util.spawn_with_shell("/home/mario/.config/awesome/mpd_notify")
-

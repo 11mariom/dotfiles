@@ -19,6 +19,7 @@ setopt globdots
 setopt extendedglob
 setopt appendhistory       # history
 setopt extendedhistory
+setopt sharehistory
 setopt checkjobs           # jobs
 setopt nobeep              # no beeping
 setopt complete_in_word    # complete
@@ -27,7 +28,7 @@ setopt zle emacs
 
 ##
 # export
-export EDITOR="emacsclient --alternate-editor='' -c -nw "
+export EDITOR="emacsclient-emacs-24 --alternate-editor='' -c -nw "
 path=$PATH":/usr/games/bin/:/opt/bin/:$HOME/bin"
 export PATH=$path
 
@@ -171,7 +172,7 @@ bindkey -e
 
 ##
 # history
-HISTSIZE=1000
+HISTSIZE=5000
 HISTFILE="$HOME/.zsh_history"
 SAVEHIST=$HISTSIZE
 

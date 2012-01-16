@@ -1,12 +1,28 @@
 #!/bin/sh
 
+mail() {
+    count=$( curl -n --silent https://mail.google.com/mail/feed/atom/unread | \
+	awk '/<fullcount>/,/<\/fullcount>/ {gsub(/<[^>]*>/, ""); print}' )
+    echo "mail.text = \"${count}\"" | awesome-client
+}
+
+rss() {
+    count=$( curl --silent \
+	"http://rss.mariom.tk/public.php?op=getUnread&login=mariom" )
+    echo "rss.text = \"${count}\"" | awesome-client
+}
+
+updates() {
+    updates=$(eix -uc | awk 'END{print $2}')
+    echo "pkg.text = \"${updates}\"" | awesome-client
+}
+
+
 while [ 1 ]
 do
-    count=$(elinks -dump "http://rss.mariom.tk/backend.php?op=getUnread&login=mariom" | awk '{sub(/^[ \t]+/, "")};1' )
-    echo "rss.text = \"  ${count} news  \"" | awesome-client
+    mail
+    rss
+    updates
 
-    updates=$(eix -uc | awk 'END{print $2,"updates"}')
-    echo "pkg.text = \"  ${updates}  \"" | awesome-client
-
-    sleep 5m
+    sleep 1m
 done
