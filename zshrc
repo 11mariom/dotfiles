@@ -176,6 +176,6 @@ HISTSIZE=5000
 HISTFILE="$HOME/.zsh_history"
 SAVEHIST=$HISTSIZE
 
-if [[ $( id -g ) != 0 ]]; then
+if [[ $( id -g ) != 0 && ${TERM} != "linux" ]]; then
     welcome
 fi
