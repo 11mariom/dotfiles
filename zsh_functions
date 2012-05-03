@@ -43,6 +43,10 @@ pflv() {
 ##
 # welcome
 welcome() {
-    echo "Cytat na $(date +'%j dzień roku %Y'):"
-    /home/mario/dev/bash/fortunes/wikicytat.sh
+    if [[ $(date +%j) == 256 ]]; then
+	echo "Happy programmers' day!"
+    else
+	echo "Cytat na $(date +'%j dzień roku %Y'):"
+	/home/mario/dev/scripts/bash/fortunes/wikicytat.sh
+    fi
 }

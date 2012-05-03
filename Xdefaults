@@ -12,10 +12,11 @@ urxvt*saveLines:3000
 urxvt*termName:rxvt-unicode-256color
 urxvt*font:xft:Terminus:size=9:antialias=false
 
-urxvt*perl-ext-common:default,url-select,matcher
+! urxvt*perl-ext-common:default,url-select,matcher
+urxvt*perl-ext-common:default,matcher
 urxvt*urlLauncher:/home/mario/bin/firefox-bin
 urxvt*undelineURLs:true
-urxvt*keysym.M-m:perl:url-select:select_next
+! urxvt*keysym.M-m:perl:url-select:select_next
 urxvt*matcher.button:1
 urxvt*matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
 
