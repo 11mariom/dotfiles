@@ -8,7 +8,7 @@ case $1 in
 	exec awesome -c /tmp/rc.lua
 	;;
     *)
-	exec awesome
+	exec $1
 	;;
 esac
 

@@ -120,6 +120,10 @@ pprecmd () {
 PROMPT="%{$bg[black]%}$BWHITE%3~ %(!,$BRED#,$BGREEN\$)$NO_COLOR "
 
 ##
+# highlight
+zle_highlight=(isearch:underline region:bg=blue special:fg=red suffix:underline)
+
+##
 # completion
 zstyle ':completion:*' completer _list _oldlist _match _prefix\
        _expand _complete _ignored _correct _approximate 
