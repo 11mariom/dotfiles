@@ -14,6 +14,7 @@ autoload zmv
 ##
 # setopt
 setopt autocd              # dirs
+setopt autopushd
 setopt chasedots           # glob
 setopt globdots
 setopt extendedglob
