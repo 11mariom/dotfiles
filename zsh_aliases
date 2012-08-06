@@ -5,6 +5,7 @@ _OPTIONS="--color=auto"
 ##
 # alias
 alias b="cd .."
+alias calc="autoload -U zcalc && zcalc"
 alias e=$EDITOR
 alias l="ls $_OPTIONS"
 alias s="su"
