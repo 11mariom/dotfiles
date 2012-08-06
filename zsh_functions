@@ -31,6 +31,18 @@ ext () {
 compdef '_files -g "*.{tar.bz2,tar.gz,bz2,gz,tar,tgz,tbz2,zip,Z,7z,rar,xz}"' ext
 
 ##
+# generate password
+pass() {
+    < /dev/urandom tr -dc '[:alnum:]' | head -c${1:-8}
+    echo
+}
+
+pin() {
+    < /dev/urandom tr -dc '[:digit:]' | head -c${1:-4}
+    echo
+}
+
+##
 # play flash movies
 pflv() {
     pid=$(pgrep -f flashplayer | tail -l)
@@ -47,6 +59,6 @@ welcome() {
 	echo "Happy programmers' day!"
     else
 	echo "Cytat na $(date +'%j dzień roku %Y'):"
-	/home/mario/dev/scripts/bash/fortunes/wikicytat.sh
+	~/dev/scripts/bash/fortunes/wikicytat.sh
     fi
 }
