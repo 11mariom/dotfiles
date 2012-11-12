@@ -1,3 +1,4 @@
+# -*- sh -*-
 ##
 # variable
 _OPTIONS="--color=auto"
@@ -20,6 +21,13 @@ alias ebuild="FEATURES=-mini-manifest ebuild"
 alias grep="grep $_OPTIONS"
 alias ls="ls $_OPTIONS"
 alias tmux="tmux -2"
+
+##
+# prompt for overwrite
+alias cp="cp -i"
+alias ln="ln -i"
+alias mv="mv -i"
+
 
 ## 
 # global alias

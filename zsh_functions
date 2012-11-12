@@ -1,3 +1,4 @@
+# -*- sh -*-
 ##
 # cd == cd + ls
 cd() {
@@ -58,7 +59,7 @@ welcome() {
     if [[ $(date +%j) == 256 ]]; then
 	echo "Happy programmers' day!"
     else
-	echo "Cytat na $(date +'%j dzień roku %Y'):"
-	~/dev/scripts/bash/fortunes/wikicytat.sh
+	echo "Słowo na $(date +'%j dzień roku %Y'):"
+	~/dev/scripts/bash/fortunes/urbandictionary.sh
     fi
 }
