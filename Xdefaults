@@ -14,7 +14,7 @@ urxvt*font:xft:Terminus:size=9:antialias=false
 
 ! urxvt*perl-ext-common:default,url-select,matcher
 urxvt*perl-ext-common:default,matcher
-urxvt*urlLauncher:/home/mario/bin/firefox-bin
+urxvt*url-launcher:/home/mario/bin/firefox-bin
 urxvt*undelineURLs:true
 ! urxvt*keysym.M-m:perl:url-select:select_next
 urxvt*matcher.button:1
