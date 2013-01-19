@@ -10,6 +10,12 @@ compinit
 autoload edit-command-line
 zle -N edit-command-line
 autoload zmv
+autoload -U select-word-style
+select-word-style normal
+
+##
+# word delimiters
+export WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 
 ##
 # setopt
