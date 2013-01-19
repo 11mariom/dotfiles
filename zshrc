@@ -32,6 +32,7 @@ setopt nobeep              # no beeping
 setopt complete_in_word    # complete
 setopt correct correctall  # correct
 setopt zle emacs
+setopt printexitvalue      # print exit code if non-zero
 
 ##
 # export
