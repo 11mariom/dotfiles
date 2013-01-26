@@ -1,4 +1,5 @@
 #!/bin/sh
+export SDL_AUDIODRIVER=alsa
 
 case $1 in
     fluxbox)
