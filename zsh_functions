@@ -54,6 +54,16 @@ pflv() {
 }
 
 ##
+# generate and print qrcode on cli
+qr() {
+    f=$(date +%s)
+
+    qrencode "$1" -o "/tmp/$f.png"
+    icat "/tmp/$f.png"
+    rm "/tmp/$f.png"
+}
+
+##
 # welcome
 welcome() {
     if [[ $(date +%j) == 256 ]]; then
