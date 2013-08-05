@@ -37,8 +37,13 @@ setopt printexitvalue      # print exit code if non-zero
 ##
 # export
 export EDITOR="emacsclient-emacs-24 --alternate-editor='' -c -nw "
-path="$HOME/bin:"$PATH":/usr/games/bin/:/opt/bin/"
-export PATH=$path
+
+##
+# path
+home_bin="$HOME/bin"
+colorgcc="/usr/lib/colorgcc/bin"
+opt_bin="/opt/bin"
+export PATH=$home_bin":"$colorgcc":"$PATH":"$opt_bin
 
 # colorful manpages in less
 export LESS_TERMCAP_mb=$'\e[1;35m'
