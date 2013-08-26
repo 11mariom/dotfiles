@@ -1,7 +1,7 @@
 # C is variable for command. If you want to move files instead of symlinks use
 #C=cp
 C=ln -s
-DESTDIR=~
+DESTDIR=/tmp/home/
 
 .PHONY: X all gtk help ncmpcpp tmux zsh
 
@@ -10,28 +10,43 @@ help:
 	@echo " all     Installs all described below"
 	@echo " X       Installs .Xdefaults and .xinitrc"
 	@echo " gtk     Installs .gtkrc"
-	@echo " ncmpcpp Installs .ncmpcpp"
+	@echo " ncmpc++ Installs .ncmpcpp"
 	@echo " tmux    Installs .tmuxrc"
 	@echo " zsh     Installs .zshrc and dependencies"
+	@echo ""
+	@echo "Each option also have backup-<target> version to backup your existing files"
 
-all: X gtk ncmpcpp tmux zsh
+backup-all: backup-X backup-gtk backup-ncmpc++ backup-tmux backup-zsh
 
-X:
-	$(C) $(CURDIR)/Xdefaults $(DESTDIR)/.Xdefaults
-	$(C) $(CURDIR)/xinitrc $(DESTDIR)/.xinitrc
+all: X gtk ncmpc++ tmux zsh
 
-gtk:
-	$(C) $(CURDIR)/gtkrc-2.0 $(DESTDIR)/.gtkrc-2.0
+backup-X: Xdefaults xinitrc
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
-ncmpcpp:
-	$(C) $(CURDIR)/ncmpcpp $(DESTDIR)/.ncmpcpp
+X: Xdefaults xinitrc
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
 
-tmux:
-	$(C) $(CURDIR)/tmux.conf $(DESTDIR)/.tmux.conf
+backup-gtk: gtkrc-2.0
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
-zsh:
-	$(C) $(CURDIR)/zsh_aliases $(DESTDIR)/.zsh_aliases
-	$(C) $(CURDIR)/zsh_functions $(DESTDIR)/.zsh_functions
-	$(C) $(CURDIR)/zshrc $(DESTDIR)/.zshrc
+gtk: gtkrc-2.0
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
 
+backup-ncmpc++: ncmpcpp
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
+
+ncmpc++: ncmpcpp
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
+
+backup-tmux: tmux.conf
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
+
+tmux: tmux.conf
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
+
+backup-zsh: zsh_aliases zsh_functions zshrc
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
+
+zsh: zsh_aliases zsh_functions zshrc
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
 
