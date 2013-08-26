@@ -1,7 +1,7 @@
 # C is variable for command. If you want to move files instead of symlinks use
 #C=cp
 C=ln -s
-DESTDIR=/tmp/home/
+DESTDIR=~
 
 .PHONY: X all gtk help ncmpcpp tmux zsh
 
