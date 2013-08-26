@@ -113,12 +113,6 @@ zstyle ':vcs_info:*' branchformat "%b:%r"
 
 ##
 # prompt
-NO_COLOR="%{${reset_color}%}"
-for color in RED GREEN YELLOW WHITE BLACK CYAN; do
-    eval $color='%{$fg[${(L)color}]%}'
-    eval B$color='%{$fg_bold[${(L)color}]%}'
-done
-
 pprecmd () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
 	    zstyle ':vcs_info:*' formats " %F{12}[%b%c%u%F{12}]"
@@ -127,10 +121,10 @@ pprecmd () {
     }
     vcs_info
 
-    RPROMPT="$vcs_info_msg_0_ %(?,$BGREEN:),$BRED;()$BWHITE"
+    RPROMPT="%{$fg[black]%}%m $vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
 }
 
-PROMPT="%{$bg[black]%}$BWHITE%3~ %(!,$BRED#,$BGREEN\$)$NO_COLOR "
+PROMPT="%{$bg[black]$fg_bold[white]%}%3~ %(!,%{$fg_bold[red]%}#,%{$fg_bold[green]%}\$)%{$reset_color%} "
 
 ##
 # highlight
