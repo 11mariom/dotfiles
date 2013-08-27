@@ -33,10 +33,10 @@ gtk: gtkrc-2.0
 	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
 
 backup-ncmpc++: ncmpcpp
-	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
+	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f)/config.bak;)
 
 ncmpc++: ncmpcpp
-	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
+	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f)/config;)
 
 backup-tmux: tmux.conf
 	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
