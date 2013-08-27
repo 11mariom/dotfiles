@@ -58,7 +58,7 @@ pflv() {
 qr() {
     f=$(date +%s)
 
-    qrencode "$1" -o "/tmp/$f.png"
+    qrencode "$1" -o "/tmp/$f.png" -s 1
     icat "/tmp/$f.png"
     rm "/tmp/$f.png"
 }
