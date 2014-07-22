@@ -33,12 +33,12 @@ compdef '_files -g "*.{tar.bz2,tar.gz,bz2,gz,tar,tgz,tbz2,zip,Z,7z,rar,xz}"' ext
 
 ##
 # generate password
-pass() {
-    < /dev/urandom tr -dc '[:print:]' | head -c${1:-8}
+gpass() {
+    < /dev/urandom tr -dc '[:alnum:]' | head -c${1:-8}
     echo
 }
 
-pin() {
+gpin() {
     < /dev/urandom tr -dc '[:digit:]' | head -c${1:-4}
     echo
 }
