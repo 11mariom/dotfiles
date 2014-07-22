@@ -36,14 +36,24 @@ setopt printexitvalue      # print exit code if non-zero
 
 ##
 # export
-export EDITOR="emacsclient-emacs-24 --alternate-editor='' -c -nw "
+if [[ "$HOST" == "GLaDOS" ]]; then
+    export EDITOR="emacsclient-emacs-24 --alternate-editor='' -c -nw "
+else
+    export EDITOR="vim "
+fi
 
 ##
 # path
 home_bin="$HOME/bin"
 colorgcc="/usr/lib/colorgcc/bin"
 opt_bin="/opt/bin"
-export PATH=$home_bin":"$colorgcc":"$PATH":"$opt_bin
+brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
+
+if [[ `uname` == "Darwin" ]]; then
+    export PATH=$home_bin":"$brew_bin":"$colorgcc":"$PATH":"$opt_bin
+else
+    export PATH=$home_bin":"$colorgcc":"$PATH":"$opt_bin
+fi
 
 # colorful manpages in less
 export LESS_TERMCAP_mb=$'\e[1;35m'
