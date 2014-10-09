@@ -49,12 +49,26 @@ colorgcc="/usr/lib/colorgcc/bin"
 opt_bin="/opt/bin"
 brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
 
+# my defaults
+PATH=$colorgcc":"$PATH":"$opt_bin
+
+# homebrew
 if [[ `uname` == "Darwin" ]]; then
-    export PATH=$home_bin":"$brew_bin":"$colorgcc":"$PATH":"$opt_bin
-else
-    export PATH=$home_bin":"$colorgcc":"$PATH":"$opt_bin
+    PATH=$brew_bin":"$PATH
 fi
 
+# ruby
+if which gem >/dev/null; then
+    ruby_bin="$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+    PATH=$ruby_bin":"$PATH
+fi
+
+# home bin
+PATH=$home_bin":"$PATH
+
+export PATH
+
+##
 # colorful manpages in less
 export LESS_TERMCAP_mb=$'\e[1;35m'
 export LESS_TERMCAP_md=$'\e[1;34m'
