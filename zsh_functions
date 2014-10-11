@@ -34,7 +34,7 @@ compdef '_files -g "*.{tar.bz2,tar.gz,bz2,gz,tar,tgz,tbz2,zip,Z,7z,rar,xz}"' ext
 ##
 # generate password
 gpass() {
-    < /dev/urandom tr -dc '[:alnum:]' | head -c${1:-8}
+    < /dev/urandom tr -dc '[:graph:]' | head -c${1:-16}
     echo
 }
 
