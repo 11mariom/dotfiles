@@ -53,7 +53,7 @@ urxvt*colorBD:#FFFFFF
 
 !urxvt*backgroundPixmap: /home/mario/wallpaper.png;0x0+50+50:root
 urxvt*depth: 32
-urxvt*background: rgba:0000/0000/0000/bbbb
+urxvt*background: rgba:0000/0000/0000/dddd
 
 urxvt*cutchars: `"()'<>[]{|}"
 
