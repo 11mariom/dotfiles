@@ -52,8 +52,10 @@ brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
 # my defaults
 PATH=$colorgcc":"$PATH":"$opt_bin
 
-# homebrew
+# homebrew and OS X fixes
 if [[ `uname` == "Darwin" ]]; then
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
     PATH=$brew_bin":"$PATH
 fi
 
