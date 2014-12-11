@@ -45,6 +45,6 @@ hash -d torrents="/media/Dane/Torrents"
 ##
 # mac aliases
 if [[ `uname` == "Darwin" ]]; then
-    alias mtr="sudo sudo /usr/local/Cellar/mtr/0.85/sbin/mtr"
+    alias mtr="sudo /usr/local/Cellar/mtr/0.85/sbin/mtr"
 fi
 
