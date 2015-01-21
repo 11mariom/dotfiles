@@ -1,5 +1,6 @@
 Xcursor.theme: DMZ
 
+urxvt*intensityStyles:true
 urxvt*urgentOnBell: True
 urxvt*geometry: 80x25
 urxvt*loginShell:true
@@ -10,7 +11,7 @@ urxvt*foreground:#CACACA
 urxvt*scrollBar:false
 urxvt*saveLines:3000
 urxvt*termName:rxvt-unicode-256color
-urxvt*font:xft:Terminus:size=9:antialias=false
+urxvt*font:xft:Terminus:size=9:antialias=false:lang=pl
 
 ! urxvt*perl-ext-common:default,url-select,matcher
 urxvt*perl-ext-common:default,matcher
