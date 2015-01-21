@@ -28,7 +28,6 @@ alias cp="cp -i"
 alias ln="ln -i"
 alias mv="mv -i"
 
-
 ## 
 # global alias
 alias -g G="| grep"
@@ -42,3 +41,10 @@ hash -d t="~/tmp"
 hash -d D="/media/Dane"
 hash -d cdrom="/media/cdrom"
 hash -d torrents="/media/Dane/Torrents"
+
+##
+# mac aliases
+if [[ `uname` == "Darwin" ]]; then
+    alias mtr="sudo /usr/local/Cellar/mtr/0.85/sbin/mtr"
+fi
+
