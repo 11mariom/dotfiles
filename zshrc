@@ -214,5 +214,5 @@ HISTFILE="$HOME/.zsh_history"
 SAVEHIST=$HISTSIZE
 
 if [[ $( id -g ) != 0 && ${TERM} != "linux" ]]; then
-    welcome
+#    welcome
 fi
