@@ -11,7 +11,7 @@ case $1 in
 	exec awesome -c /tmp/rc.lua
 	;;
     steam)
-	STEAM_RUNTIME=1 exec steam -bigpicture
+	STEAM_RUNTIME=1 exec steam #-bigpicture
 	;;
     *)
 	exec $1
