@@ -70,8 +70,8 @@ qr() {
 welcome() {
     if [[ $(date +%j) == 256 ]]; then
 	echo "Happy programmers' day!"
-    else
-	echo "Słowo na $(date +'%j dzień roku %Y'):"
-	~/dev/scripts/bash/fortunes/urbandictionary.sh
+    #else
+	#echo "Słowo na $(date +'%j dzień roku %Y'):"
+	#~/dev/scripts/bash/fortunes/urbandictionary.sh
     fi
 }
