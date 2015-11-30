@@ -16,6 +16,11 @@ alias zln="zmv -wL"
 alias zmv="zmv -wM"
 
 ##
+# using rsync
+alias cp="rsync -p --progress"
+alias scp="rsync -p --progress"
+
+##
 # default options
 alias ebuild="FEATURES=-mini-manifest ebuild"
 alias grep="grep $_OPTIONS"
