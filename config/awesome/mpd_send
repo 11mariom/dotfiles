@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /home/mario/.config/awesome/mpd_cfg
+source ~/.config/awesome/mpd_cfg
 
 mpd_send () {
     echo "naughty.notify({title = \"${info[0]}\",\

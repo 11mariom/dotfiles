@@ -3,7 +3,7 @@
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg /home/mario/er500.jpg" }
+theme.wallpaper_cmd = { "awsetbg -c /home/mariom/.wallpaper.jpg" }
 -- }}}
 
 -- {{{ Styles
@@ -66,8 +66,8 @@ theme.menu_width  = "100"
 
 -- {{{ Icons
 -- {{{ Taglist
-theme.taglist_squares_sel   = "/home/mario/.config/awesome/tray/squarez.png"
-theme.taglist_squares_unsel = "/home/mario/.config/awesome/tray/squarefz.png"
+--theme.taglist_squares_sel   = "/home/mario/.config/awesome/tray/squarez.png"
+--theme.taglist_squares_unsel = "/home/mario/.config/awesome/tray/squarefz.png"
 --theme.taglist_squares_resize = "false"
 -- }}}
 

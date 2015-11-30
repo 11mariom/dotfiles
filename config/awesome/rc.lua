@@ -1,4 +1,3 @@
-
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -14,17 +13,17 @@ require("shifty")
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-beautiful.init("/home/mario/.config/awesome/theme.lua")
+beautiful.init("/home/mariom/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtc"
-browser = "/home/mario/bin/firefox-bin"
-mpds = "/home/mario/.config/awesome/"
+browser = "/home/mariom/bin/firefox-bin"
+mpds = "/home/mariom/.config/awesome/"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
 -- naughty cfg (!)
-naughty.config.default_preset.opacity = .85
+-- naughty.config.default_preset.opacity = .85
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -50,24 +49,46 @@ layouts =
     awful.layout.suit.floating         --12
 }
 -- }}}
+-- {{ Shifty next tag
+--function next_tag( name )
+--   local n = 0
+--   for _ in pairs( awful.tag.gettags(1) ) do
+--      n = n +1
+--   end
+--
+--   return n .. ":" .. name
+--end
+
+-- }}
 -- {{ Shifty tags
 shifty.config.tags = {
    ["1:main"] = { layout = awful.layout.suit.tile.right, mwfact = 0.675, 
-		  init = true, exclusive = true, max_clients = 5, position = 1, },
-   ["2:gimp"] = { layout = awful.layout.suit.tile, mwfact = 0.18, exclusive = true, },
-   ["2:movie"] = { layout = awful.layout.suit.floating, exclusive = true, },
-   ["2:rest"] = { layout = awful.layout.suit.floating, },
-   ["2:wine"] = { layout = awful.layout.suit.floating, exclusive = true, },
+		  init = true, exclusive = true, max_clients = 3, position = 1, },
+   ["4:gimp"] = { layout = awful.layout.suit.tile, mwfact = 0.18, exclusive = true, },
+   ["3:movie"] = { layout = awful.layout.suit.floating, exclusive = true, },
+   ["4:rest"] = { layout = awful.layout.suit.floating, },
+   ["4:wine"] = { layout = awful.layout.suit.floating, exclusive = true, },
+   ["2:steam"] = { layout = awful.layout.suit.tile.right, mwfact = 0.8, nopopup = true},
 }
 
 shifty.config.apps = {
-   { match = { "" }, tag = "2:rest" },
-   { match = { "Navigator", "Minefield", "Nightly", "urxvt" }, tag = "1:main", minimized = false, },
-   { match = { "urxvt"     }, slave = true, },
-   { match = { "Mplayer"   }, tag = "2:movie", },
-   { match = { "Gimp"      }, tag = "2:gimp", },
-   { match = { "gimp%-image%-window" }, slave = true, },
-   { match = { "Wine" }, tag = "2:wine", },
+   { match = { "" }, 
+     tag = "4:rest" },
+   { match = { "Navigator", "Minefield", "Nightly", "urxvt" }, 
+     tag = "1:main", minimized = false, },
+   { match = { "urxvt" }, 
+     slave = true, },
+   { match = { "mplayer2" }, 
+     tag = "3:movie", },
+   { match = { "Gimp" }, 
+     tag = "4:gimp", },
+   { match = { "gimp%-image%-window" }, 
+     slave = true, },
+   { match = { class = { "Steam" }, }, 
+     tag = "2:steam", },
+--   { match = { class = { "Steam" }, name = { "czat" } },
+--     float = true,
+--     tag = "2:steam", },
    { match = { "" }, buttons = awful.util.table.join (
 	awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
 	awful.button({ modkey }, 1, function (c) awful.mouse.client.move() end),
@@ -156,7 +177,7 @@ mail.text = "-"
 mpdi = widget({ type = "textbox" })
 mpdi.text = '<span color="#d5fc0d">MPD</span>'
 vicious.cache(vicious.widgets.mpd)
-mpdc = { nil, "127.0.0.1", "6000" }
+mpdc = { nil, "127.0.0.1", "6600" }
 mpd = widget({ type = "textbox" })
 vicious.register(mpd, vicious.widgets.mpd, "${Artist} - ${Title}", 1, mpdc)
 mpd:buttons(awful.util.table.join( 
@@ -372,6 +393,12 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
+    awful.key({ modkey, "Shift"   }, "n",      function (c) local tag = awful.tag.selected()
+		 for i = 1, #tag:clients() do
+		    tag:clients()[i].minimized = false
+		    tag:clients()[i]:redraw()
+		 end
+					       end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
@@ -415,13 +442,13 @@ end)
 client.add_signal("focus", function(c) 
 --	c.border_width = beautiful.border_width
 	c.border_color = beautiful.border_focus
-	c.opacity = 1
+--	c.opacity = 1
  end)
 client.add_signal("unfocus", function(c) 
 --	c.border_width = "2"
 	c.border_color = beautiful.border_normal
-	c.opacity = 0.9
+--	c.opacity = 0.9
  end)
 -- }}}
 
-awful.util.spawn_with_shell("/home/mario/.config/awesome/runonce.sh")
+awful.util.spawn_with_shell("/home/mariom/.config/awesome/runonce.sh")

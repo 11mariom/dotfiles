@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /home/mario/.config/awesome/mpd_cfg
+source ~/.config/awesome/mpd_cfg
 
 mpd_status () {
     command=$(mpc -h ${h} -p ${p} -f ${f})

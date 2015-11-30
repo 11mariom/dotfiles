@@ -2,18 +2,19 @@
 
 mail() {
     count=$( curl -n --silent https://mail.google.com/mail/feed/atom/unread | \
-	awk '/<fullcount>/,/<\/fullcount>/ {gsub(/<[^>]*>/, ""); print}' )
+	awk '/<fullcount>/,/<\/fullcount>/{gsub(/.*<fullcount>/,"");
+             gsub(/<\/fullcount>.*/, ""); print}' )
     echo "mail.text = \"${count}\"" | awesome-client
 }
 
 rss() {
     count=$( curl --silent \
-	"http://rss.mariom.tk/public.php?op=getUnread&login=mariom" )
+	"http://rss.mariom.pl/public.php?op=getUnread&login=mariom" )
     echo "rss.text = \"${count}\"" | awesome-client
 }
 
 updates() {
-    updates=$(eix -uc | awk 'END{print $2}')
+    updates=$(eix -u --only-names | wc -l)
     echo "pkg.text = \"${updates}\"" | awesome-client
 }
 
