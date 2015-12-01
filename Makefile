@@ -20,10 +20,10 @@ backup-all: backup-X backup-gtk backup-ncmpc++ backup-tmux backup-zsh
 
 all: X gtk ncmpc++ tmux zsh
 
-backup-X: Xdefaults xinitrc
+backup-X: Xdefaults xinitrc xprofile
 	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
-X: Xdefaults xinitrc
+X: Xdefaults xinitrc xprofile
 	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
 
 backup-gtk: gtkrc-2.0
