@@ -1,4 +1,4 @@
-g:dddd/0000/0000/0000[>85;95;0c!/bin/bash
+#!/bin/bash
 aw="$HOME/.config/awesome"
 notify="$HOME/dev/scripts/bash/bashnotify/"
 
