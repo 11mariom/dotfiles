@@ -2,6 +2,8 @@
 export SDL_AUDIODRIVER=alsa
 
 eval $(gpg-agent --daemon)
+eval $(ssh-agent)
+ssh-add
 
 case $1 in
     fluxbox)
