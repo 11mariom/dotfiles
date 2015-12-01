@@ -1,3 +1,0 @@
-#!/bin/sh
-
-tmux -2 att -t awesome || $1/.tmux

@@ -1,4 +1,4 @@
-#!/bin/bash
+g:dddd/0000/0000/0000[>85;95;0c!/bin/bash
 aw="$HOME/.config/awesome"
 notify="$HOME/dev/scripts/bash/bashnotify/"
 
@@ -30,7 +30,7 @@ if [[ ! $(pidof mpdscribble) ]]; then
     mpdscribble &
 fi
 
-${notify}/bashnotifystart.sh restart &
-killall -9 widgets
-${aw}/widgets &
+#${notify}/bashnotifystart.sh restart &
+#killall -9 widgets
+#${aw}/widgets &
 #xmodmap -e "pointer = 1 2 3 8 10 6 7 4 9 5 11 12 13 14 15" &
