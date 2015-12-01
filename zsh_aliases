@@ -29,7 +29,7 @@ alias tmux="tmux -2"
 
 ##
 # prompt for overwrite
-alias cp="cp -i"
+#alias cp="cp -i"
 alias ln="ln -i"
 alias mv="mv -i"
 
