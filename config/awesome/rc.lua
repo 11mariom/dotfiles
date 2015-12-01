@@ -165,6 +165,57 @@ mpd_widget:buttons(awful.util.table.join(
 mpd_image = wibox.widget.imagebox()
 mpd_image:set_image(awful.util.getdir("config") .. "/icons/music.png")
 
+-- Mail widgets
+mail_image = wibox.widget.imagebox()
+mail_image:set_image(awful.util.getdir("config") .. "/icons/email.png")
+
+function check_mail(mail, opts)
+   os.execute(awful.util.getdir("config") .. "/mail.py " .. opts .. " " .. mail .. " > /tmp/" .. ".status-" .. mail)
+   local f = io.open("/tmp/.status-" .. mail)
+   local l = nil
+
+   if f ~= nil then
+      l = f:read()
+   else
+      l = "?"
+   end
+
+   f:close()
+   return l
+end
+
+function mail_info()
+   s = ""
+   gmail = check_mail("imap.gmail.com", "-s")
+   work = check_mail("mail.squiz.pl", "")
+   priv = check_mail("mail.mariom.pl", "")
+
+   if gmail ~= "?" and tonumber(gmail) > 0 then
+      s = s .. " G: " .. gmail
+   end
+
+   if work ~= "?" and tonumber(work) > 0 then
+      s = s .. " W: " .. work
+   end
+
+   if priv ~= "?" and tonumber(priv) > 0 then
+      s = s .. " P: " .. priv
+   end
+
+   if s == "" then
+      s = " 0 mails "
+   else
+      s = s .. " "
+   end
+
+   return s
+end
+
+gmail_widget = wibox.widget.textbox(mail_info())
+gmail_widget.timer = timer{timeout=60}
+gmail_widget.timer:connect_signal("timeout", function () gmail_widget:set_text(mail_info()) end)
+gmail_widget.timer:start()
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -244,6 +295,8 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(mail_image)
+    right_layout:add(gmail_widget)
     right_layout:add(mpd_image)
     right_layout:add(mpd_widget)
     right_layout:add(vol_image)
@@ -438,6 +491,8 @@ awful.rules.rules = {
     { rule = { class = "pinentry" },
       properties = { floating = true } },
     { rule = { class = "gimp" },
+      properties = { floating = true } },
+    { rule = { class = "SessionManager" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 1 of screen 1.
     { rule = { class = "Firefox" },
