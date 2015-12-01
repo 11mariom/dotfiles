@@ -170,7 +170,7 @@ mail_image = wibox.widget.imagebox()
 mail_image:set_image(awful.util.getdir("config") .. "/icons/email.png")
 
 function check_mail(mail, opts)
-   os.execute(awful.util.getdir("config") .. "/mail.py " .. opts .. " " .. mail .. " > /tmp/" .. ".status-" .. mail)
+   os.execute(awful.util.getdir("config") .. "/mail.py " .. opts .. " " .. mail .. " > /tmp/" .. ".status-" .. mail .. " &")
    local f = io.open("/tmp/.status-" .. mail)
    local l = nil
 
@@ -186,9 +186,9 @@ end
 
 function mail_info()
    s = ""
-   gmail = check_mail("imap.gmail.com", "-s")
-   work = check_mail("mail.squiz.pl", "")
-   priv = check_mail("mail.mariom.pl", "")
+   gmail = check_mail("imap.gmail.com", "-s") or "?"
+   work = check_mail("mail.squiz.pl", "") or "?"
+   priv = check_mail("mail.mariom.pl", "") or "?"
 
    if gmail ~= "?" and tonumber(gmail) > 0 then
       s = s .. " G: " .. gmail
