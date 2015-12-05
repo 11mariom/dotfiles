@@ -176,11 +176,11 @@ function check_mail(mail, opts)
 
    if f ~= nil then
       l = f:read()
+      f:close()
    else
       l = "?"
    end
 
-   f:close()
    return l
 end
 
@@ -358,10 +358,10 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "f",      function () awful.util.spawn(browser) end),
-    awful.key({ }, "XF86AudioPlay", function () awful.util.spawn_with_shell(mpds .. "mpd_change toggle") end),
-    awful.key({ }, "XF86AudioStop", function () awful.util.spawn_with_shell(mpds .. "mpd_chage pause") end),
-    awful.key({ }, "XF86AudioNext", function () awful.util.spawn_with_shell(mpds .. "mpd_change next") end),
-    awful.key({ }, "XF86AudioPrev", function () awful.util.spawn_with_shell(mpds .. "mpd_change prev") end),
+    awful.key({ }, "XF86AudioPlay", function () awful.util.spawn_with_shell("mpc toggle") end),
+    awful.key({ }, "XF86AudioStop", function () awful.util.spawn_with_shell("mpc pause") end),
+    awful.key({ }, "XF86AudioNext", function () awful.util.spawn_with_shell("mpc next") end),
+    awful.key({ }, "XF86AudioPrev", function () awful.util.spawn_with_shell("mpc prev") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("mute") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 05%-") end),
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 05%+") end),
