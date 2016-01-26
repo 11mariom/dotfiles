@@ -17,8 +17,8 @@ alias zmv="zmv -wM"
 
 ##
 # using rsync
-alias cp="rsync -p --progress"
-alias scp="rsync -p --progress"
+alias cp="rsync -pP"
+alias scp="rsync -pP"
 
 ##
 # default options
