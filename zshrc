@@ -60,7 +60,7 @@ if [[ `uname` == "Darwin" ]]; then
 fi
 
 # ruby
-if which gem >/dev/null; then
+if which ruby >/dev/null; then
     ruby_bin="$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
     PATH=$ruby_bin":"$PATH
 fi
