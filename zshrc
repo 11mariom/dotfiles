@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# homebrew and OS X fixes
+if [[ `uname` == "Darwin" ]]; then
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    PATH=$brew_bin":"$PATH
+    fpath=($(brew --prefix)/share/zsh-completions $fpath)
+fi
+
 ##
 # autoload
 autoload -Uz vcs_info
@@ -51,13 +59,6 @@ brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
 
 # my defaults
 PATH=$colorgcc":"$PATH":"$opt_bin
-
-# homebrew and OS X fixes
-if [[ `uname` == "Darwin" ]]; then
-    export LANG=en_US.UTF-8
-    export LC_ALL=en_US.UTF-8
-    PATH=$brew_bin":"$PATH
-fi
 
 # ruby
 if which ruby >/dev/null; then
@@ -159,7 +160,7 @@ zle_highlight=(isearch:underline region:bg=blue special:fg=red suffix:underline)
 ##
 # completion
 zstyle ':completion:*' completer _list _oldlist _match _prefix\
-       _expand _complete _ignored _correct _approximate 
+       _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' glob "yes"
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
