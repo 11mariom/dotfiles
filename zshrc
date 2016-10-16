@@ -1,9 +1,17 @@
 #!/bin/zsh
 
+##
+# path
+home_bin="$HOME/bin"
+colorgcc="/usr/lib/colorgcc/bin"
+opt_bin="/opt/bin"
+brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
+
 # homebrew and OS X fixes
 if [[ `uname` == "Darwin" ]]; then
     export LANG=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
+
     PATH=$brew_bin":"$PATH
     fpath=($(brew --prefix)/share/zsh-completions $fpath)
 fi
@@ -51,12 +59,7 @@ else
 fi
 
 ##
-# path
-home_bin="$HOME/bin"
-colorgcc="/usr/lib/colorgcc/bin"
-opt_bin="/opt/bin"
-brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
-
+# PATH
 # my defaults
 PATH=$colorgcc":"$PATH":"$opt_bin
 
