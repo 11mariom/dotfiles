@@ -97,6 +97,8 @@ if [[ -f ~/.dircolors-256 ]] & [[ -f ~/.dircolors-8 ]]; then
        eval $( dircolors -b ~/.dircolors-8 )
 fi
 
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 ##
 # term dependent options
 case $TERM in
@@ -187,6 +189,20 @@ zstyle ':completion:*' add-space true
 zstyle ':completion:*' file-sort name
 zstyle ':completion:*:expand:*' tag-order all-expansions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+##
+# ssh-hosts completion
+ssh_hosts=()
+if [[ -r ~/.ssh/config ]]; then
+  ssh_hosts=($h $(awk '/^Host/ && ! /\*/{print $2}' ~/.ssh/config))
+fi
+if [[ -r ~/.ssh/known_hosts ]]; then
+  ssh_hosts=($h $(awk '{gsub(/(,.*|\[|]:.*)/, "");print $1}' ~/.ssh/known_hosts))
+fi
+if [[ $#h -gt 0 ]]; then
+  zstyle ':completion:*:ssh:*' hosts $ssh_hosts
+  zstyle ':completion:*:slogin:*' hosts $ssh_hosts
+fi
 
 ##
 # kill completion
