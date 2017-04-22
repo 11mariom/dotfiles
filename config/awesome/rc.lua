@@ -129,14 +129,14 @@ clock_image:set_image(awful.util.getdir("config") .. "/icons/clock.png")
 
 -- Create volume widget
 vol_widget = wibox.widget.textbox()
-vicious.register(vol_widget, vicious.widgets.volume, " $1% ", 2, "Master")
+vicious.register(vol_widget, vicious.widgets.volume, " $1% ", 2, "Master -c 0")
 
 vol_widget:buttons(awful.util.table.join(
 	       awful.button({ }, 2, function () awful.util.spawn("mute") end),
 	       awful.button({ }, 4, function () 
-			awful.util.spawn("amixer -q set Master 01%+") end),
+			awful.util.spawn("amixer -c 0 -q set Master 01%+") end),
 	       awful.button({ }, 5, function () 
-			awful.util.spawn("amixer -q set Master 01%-") end)
+			awful.util.spawn("amixer -c 0 -q set Master 01%-") end)
 	 ))
 
 vol_image = wibox.widget.imagebox()
@@ -363,8 +363,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioNext", function () awful.util.spawn_with_shell("mpc next") end),
     awful.key({ }, "XF86AudioPrev", function () awful.util.spawn_with_shell("mpc prev") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("mute") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 05%-") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 05%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -c 0 -q sset Master 05%-") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -c 0 -q sset Master 05%+") end),
 
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
