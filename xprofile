@@ -11,3 +11,5 @@ exec xautolock -detectsleep \
   -time 15 -locker "light-locker-command -l" \
   -notify 30 \
   -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'" &
+
+xrandr | grep DFP2 && xrandr --output DFP1 --mode 2560x1080 && xrandr --output DFP2 --mode 1680x1050 && xrandr --output DFP1 --right-of DFP2 
