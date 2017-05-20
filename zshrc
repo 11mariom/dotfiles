@@ -3,6 +3,7 @@
 ##
 # path
 home_bin="$HOME/bin"
+hlocal_bin="$HOME/.local/bin"
 colorgcc="/usr/lib/colorgcc/bin"
 opt_bin="/opt/bin"
 brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
@@ -70,6 +71,7 @@ if which ruby >/dev/null; then
 fi
 
 # home bin
+PATH=$hlocal_bin":"$PATH
 PATH=$home_bin":"$PATH
 
 export PATH
