@@ -133,9 +133,9 @@ vicious.register(vol_widget, vicious.widgets.volume, " $1% ", 2, "Master -c 0")
 
 vol_widget:buttons(awful.util.table.join(
 	       awful.button({ }, 2, function () awful.util.spawn("mute") end),
-	       awful.button({ }, 4, function () 
+	       awful.button({ }, 4, function ()
 			awful.util.spawn("amixer -c 0 -q set Master 01%+") end),
-	       awful.button({ }, 5, function () 
+	       awful.button({ }, 5, function ()
 			awful.util.spawn("amixer -c 0 -q set Master 01%-") end)
 	 ))
 
@@ -146,15 +146,15 @@ vol_image:set_image(awful.util.getdir("config") .. "/icons/volume.png")
 mpd_widget = wibox.widget.textbox()
 vicious.register(mpd_widget, vicious.widgets.mpd,
     function (mpdwidget, args)
-        if args["{state}"] == "Stop" then 
+        if args["{state}"] == "Stop" then
             return " - "
-        else 
+        else
             return " " .. args["{Artist}"]..' - '.. args["{Title}"] .. " "
         end
     end, 1)
 
-mpd_widget:buttons(awful.util.table.join( 
-      awful.button({ }, 1, 
+mpd_widget:buttons(awful.util.table.join(
+      awful.button({ }, 1,
 	 function () awful.util.spawn_with_shell("mpc toggle") end),
       awful.button({ }, 2,
 	 function () awful.util.spawn_with_shell("mpc prev") end),
@@ -486,6 +486,8 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      tag = tags[1][3] }},
+    { rule_any = { role = {"pop-up"} },
+      properties = { floating = true } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
@@ -502,12 +504,17 @@ awful.rules.rules = {
       callback = awful.client.setslave },
     { rule = { class = "Emacs" },
       properties = { tag = tags[1][2] } },
+    { rule = { class = "Atom" },
+      properties = { tag = tags[mouse.screen][2]} },
 }
 -- }}}
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
+    -- launch on active screen
+    awful.client.movetoscreen(c, mouse.screen)
+
     -- Enable sloppy focus
     c:connect_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
