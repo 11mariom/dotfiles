@@ -48,6 +48,6 @@ backup-zsh: zsh_aliases zsh_functions zshrc .zsh
 	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
 zsh: zsh_aliases zsh_functions zshrc
-	test -d zsh/zsh-autosuggestions || git clone --branch v0.3.3 git@github.com:zsh-users/zsh-autosuggestions.git zsh/zsh-autosuggestions
+	test -d zsh/zsh-autosuggestions || git clone --branch v0.3.3 https://github.com/zsh-users/zsh-autosuggestions zsh/zsh-autosuggestions
 	$(C) $(CURDIR)/zsh $(DESTDIR)/.zsh
 	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
