@@ -25,7 +25,7 @@ autoload -Uz vcs_info
 autoload -U colors
 colors
 autoload -U compinit
-compinit
+compinit -i
 autoload edit-command-line
 zle -N edit-command-line
 autoload zmv
