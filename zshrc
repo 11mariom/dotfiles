@@ -17,6 +17,8 @@ if [[ `uname` == "Darwin" ]]; then
     fpath=($(brew --prefix)/share/zsh-completions $fpath)
 fi
 
+[ -d ~/.zsh/completion ] && fpath=(~/.zsh/completion $fpath)
+
 ##
 # autoload
 autoload -Uz vcs_info
