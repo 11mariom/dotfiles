@@ -52,6 +52,7 @@ setopt complete_in_word    # complete
 setopt correct correctall  # correct
 setopt zle emacs
 setopt printexitvalue      # print exit code if non-zero
+setopt short_loops         # enable short loops eg: for i in 1 2 3; echo $i
 
 ##
 # export
