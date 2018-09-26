@@ -169,8 +169,7 @@ zle_highlight=(isearch:underline region:bg=blue special:fg=red suffix:underline)
 
 ##
 # completion
-zstyle ':completion:*' completer _list _oldlist _match _prefix\
-       _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' completer _expand _complete _list _oldlist _match _ignored _correct _approximate _prefix
 zstyle ':completion:*' glob "yes"
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
