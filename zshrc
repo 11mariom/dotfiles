@@ -69,7 +69,7 @@ PATH=$colorgcc":"$PATH":"$opt_bin
 
 # ruby
 if which ruby 2>&1 >/dev/null; then
-    ruby_bin="$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+    ruby_bin="$(ruby -rrubygems -e 'puts Gem.user_dir')/bin"
     PATH=$ruby_bin":"$PATH
 fi
 
