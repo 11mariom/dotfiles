@@ -52,8 +52,3 @@ hash -d torrents="/media/Dane/Torrents"
 if [[ `uname` == "Darwin" ]]; then
     alias mtr="sudo /usr/local/sbin/mtr"
 fi
-
-##
-# custom aliases
-alias proxy-off='eval `cat ~/bin/proxy-off`'
-alias proxy-on='eval `cat ~/bin/proxy-on`'
