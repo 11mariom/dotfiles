@@ -52,3 +52,9 @@ hash -d torrents="/media/Dane/Torrents"
 if [[ `uname` == "Darwin" ]]; then
     alias mtr="sudo /usr/local/sbin/mtr"
 fi
+
+##
+# use gopass if available
+if command -v gopass 2>&1 >/dev/null; then
+    alias pass="gopass"
+fi
