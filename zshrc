@@ -95,7 +95,7 @@ export GROFF_NO_SGR=1
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
 [ -f ~/.zsh_functions ] && . ~/.zsh_functions
 
-if [[ -f ~/.dircolors-256 ]] & [[ -f ~/.dircolors-8 ]]; then
+if [ -f ~/.dircolors-256 ] && [ -f ~/.dircolors-8 ]; then
     [ $(tput colors) = 256 ] &&\
        eval $( dircolors -b ~/.dircolors-256 )
     [ $(tput colors) != 256 ] &&\
