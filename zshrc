@@ -158,7 +158,14 @@ pprecmd () {
     }
     vcs_info
 
-    RPROMPT="%{$fg[black]%}%m $vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
+    # get terraform workspace name for prompt
+    if [ -f "${PWD}/main.tf" ]; then
+      terraform_ws="%F{3}γ `terraform workspace list | awk '/*/{gsub(/* /, "");print}'`"
+    else
+      terraform_ws=""
+    fi
+
+    RPROMPT="%{$fg[black]%}%m $terraform_ws$vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
 }
 
 PROMPT="%{$bg[black]$fg_bold[white]%}%3~ %(!,%{$fg_bold[red]%}#,%{$fg_bold[green]%}\$)%{$reset_color%} "
