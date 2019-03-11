@@ -159,10 +159,11 @@ pprecmd () {
     vcs_info
 
     # get terraform workspace name for prompt
-    if [ -f "${PWD}/main.tf" ]; then
-      terraform_ws="%F{3}γ `terraform workspace list | awk '/*/{gsub(/* /, "");print}'`"
-    else
-      terraform_ws=""
+    terraform_ws=""
+    if [ -f "${PWD}/.terraform/environment" ]; then
+      terraform_ws="%F{3}γ `cat "${PWD}/.terraform/environment"`"
+    elif [ -f "${PWD}/main.tf" ]; then
+      terraform_ws="%F{3}γ %F{1}no init"
     fi
 
     RPROMPT="%{$fg[black]%}%m $terraform_ws$vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
