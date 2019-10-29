@@ -160,13 +160,24 @@ pprecmd () {
 
     # get terraform workspace name for prompt
     terraform_ws=""
-    if [ -f "${PWD}/.terraform/environment" ]; then
-      terraform_ws="%F{3}γ `cat "${PWD}/.terraform/environment"`"
-    elif [ -f "${PWD}/main.tf" ]; then
-      terraform_ws="%F{3}γ %F{1}no init"
+    # get google cloud project id
+    terraform_gcp=""
+    if [ -f "${PWD}/main.tf" ]; then
+      if [ -f "${PWD}/.terraform/environment" ]; then
+        terraform_ws="%F{3}γ `cat "${PWD}/.terraform/environment"`"
+      else
+        terraform_ws="%F{3}γ %F{1}no init"
+      fi
+
+      if [[ -z $(terraform providers 2> /dev/null | grep -q provider.google) ]] \
+       && [[ -f $GOOGLE_APPLICATION_CREDENTIALS ]]; then
+        local project=$(command jq -r .project_id $GOOGLE_APPLICATION_CREDENTIALS || basename $GOOGLE_APPLICATION_CREDENTIALS%.json)
+
+        terraform_gcp=" %F{4}☁ %F{11}$project "
+      fi
     fi
 
-    RPROMPT="%{$fg[black]%}%m $terraform_ws$vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
+    RPROMPT="%{$fg[black]%}%m $terraform_ws$terraform_gcp$vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
 }
 
 PROMPT="%{$bg[black]$fg_bold[white]%}%3~ %(!,%{$fg_bold[red]%}#,%{$fg_bold[green]%}\$)%{$reset_color%} "
