@@ -1,6 +1,6 @@
 # C is variable for command. If you want to move files instead of symlinks use
 #C=cp
-C=ln -s
+C=ln -sfn
 DESTDIR=~
 
 .PHONY: X all gtk help ncmpcpp tmux zsh
@@ -47,11 +47,9 @@ tmux: tmux.conf
 backup-zsh: zsh_aliases zsh_functions zshrc .zsh
 	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
-terraform-completion:
+zsh: zsh_aliases zsh_functions zshrc
 	wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/terraform/_terraform -O zsh/completion/_terraform
 	wget https://raw.githubusercontent.com/hanjunlee/terragrunt-oh-my-zsh-plugin/master/_terragrunt -O zsh/completion/_terragrunt
-
-zsh: zsh_aliases zsh_functions zshrc terraform-completion
-	test -d zsh/zsh-autosuggestions || git clone --branch v0.3.3 https://github.com/zsh-users/zsh-autosuggestions zsh/zsh-autosuggestions
+	test -d zsh/zsh-autosuggestions || git clone --branch v0.6.4 https://github.com/zsh-users/zsh-autosuggestions zsh/zsh-autosuggestions
 	$(C) $(CURDIR)/zsh $(DESTDIR)/.zsh
 	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)
