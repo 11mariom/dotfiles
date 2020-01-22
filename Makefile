@@ -47,7 +47,11 @@ tmux: tmux.conf
 backup-zsh: zsh_aliases zsh_functions zshrc .zsh
 	$(foreach f, $?, mv $(DESTDIR)/.$(f) $(DESTDIR)/.$(f).bak;)
 
-zsh: zsh_aliases zsh_functions zshrc
+terraform-completion:
+	wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/terraform/_terraform -O zsh/completion/_terraform
+	wget https://raw.githubusercontent.com/hanjunlee/terragrunt-oh-my-zsh-plugin/master/_terragrunt -O zsh/completion/_terragrunt
+
+zsh: zsh_aliases zsh_functions zshrc terraform-completion
 	test -d zsh/zsh-autosuggestions || git clone --branch v0.3.3 https://github.com/zsh-users/zsh-autosuggestions zsh/zsh-autosuggestions
 	$(C) $(CURDIR)/zsh $(DESTDIR)/.zsh
 	$(foreach f, $?, $(C) $(CURDIR)/$(f) $(DESTDIR)/.$(f);)

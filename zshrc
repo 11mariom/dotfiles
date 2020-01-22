@@ -259,8 +259,3 @@ SAVEHIST=$HISTSIZE
 ##
 # terraform custom options
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
-
-if command -v terraform 2>&1 >/dev/null; then
-  autoload -U +X bashcompinit && bashcompinit
-  complete -o nospace -C terraform terraform
-fi
