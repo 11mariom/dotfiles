@@ -1,0 +1,3 @@
+# downloaded in Makefile no reason to store it in git
+zsh/completion/_terraform
+zsh/completion/_terragrunt
