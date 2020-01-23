@@ -165,6 +165,8 @@ pprecmd () {
     if [ -f "${PWD}/main.tf" ]; then
       if [ -f "${PWD}/.terraform/environment" ]; then
         terraform_ws="%F{3}γ `cat "${PWD}/.terraform/environment"`"
+      elif [ -d "${PWD}/.terraform" ]; then
+	terraform_ws="%F{3}γ %F{7}default"
       else
         terraform_ws="%F{3}γ %F{1}no init"
       fi
