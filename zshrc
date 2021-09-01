@@ -1,5 +1,4 @@
 #!/bin/zsh
-
 ##
 # path
 home_bin="$HOME/bin"
@@ -228,6 +227,10 @@ if [[ $#h -gt 0 ]]; then
   zstyle ':completion:*:ssh:*' hosts $ssh_hosts
   zstyle ':completion:*:slogin:*' hosts $ssh_hosts
 fi
+
+##
+# k8s completion
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
 ##
 # kill completion
