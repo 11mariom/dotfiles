@@ -58,3 +58,13 @@ fi
 if command -v gopass 2>&1 >/dev/null; then
     alias pass="gopass"
 fi
+
+##
+# use bat/batcat if available
+if command -v bat 2>&1 >/dev/null; then
+    alias catcat="/bin/cat"
+    alias cat="bat"
+elif command -v batcat 2>&1 >/dev/null; then
+    alias catcat="/bin/cat"
+    alias cat="batcat"
+fi
