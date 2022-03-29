@@ -170,8 +170,8 @@ pprecmd () {
         terraform_ws="%F{3}γ %F{1}no init"
       fi
 
-      if [[ -z $(find ${PWD}/.terraform/plugins -name 'terraform-provider-google*' -print -quit | grep -q '.') ]] \
-       && [[ -f $GOOGLE_APPLICATION_CREDENTIALS ]]; then
+      if [[ -f $GOOGLE_APPLICATION_CREDENTIALS ]] \
+       && [[ -z $(find ${PWD}/.terraform/providers -name 'terraform-provider-google*' -print -quit | grep -q '.') ]]; then
         local project=$(command jq -r .project_id $GOOGLE_APPLICATION_CREDENTIALS || basename $GOOGLE_APPLICATION_CREDENTIALS%.json)
 
         terraform_gcp=" %F{4}☁ %F{11}$project "
