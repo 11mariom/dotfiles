@@ -8,25 +8,26 @@ cd() {
 
 ##
 # extract
-ext () {
+ext() {
     if [ -f $1 ]; then
-	case $1 in
-	    *.tar.bz2) tar -jxvf $1 ;;
+        case $1 in
+            *.tar.bz2) tar -jxvf $1 ;;
             *.tar.gz) tar -zxvf $1 ;;
+            *.tar.xz) tar -Jxvf $1 ;;
             *.bz2) bzip2 -d $1 ;;
             *.gz) gunzip -d $1 ;;
             *.tar) tar -xvf $1 ;;
             *.tgz) tar -zxvf $1 ;;
-	    *.tbz2) tar -xvzf $1 ;;
+            *.tbz2) tar -xvzf $1 ;;
             *.zip) unzip $1 ;;
             *.Z) uncompress $1 ;;
-	    *.7z) 7z x $1 ;;
+            *.7z) 7z x $1 ;;
             *.rar) unrar x $1 ;;
-	    *.xz) xz -d $1 ;;
+            *.xz) xz -d $1 ;;
             *) echo "'$1' Error. Please go away" ;;
-	esac
+        esac
     else
-	echo "'$1' is not valid!"
+        echo "'$1' is not valid!"
     fi
 }
 compdef '_files -g "*.{tar.bz2,tar.gz,bz2,gz,tar,tgz,tbz2,zip,Z,7z,rar,xz}"' ext
@@ -36,12 +37,12 @@ compdef '_files -g "*.{tar.bz2,tar.gz,bz2,gz,tar,tgz,tbz2,zip,Z,7z,rar,xz}"' ext
 gpass() {
     local chars="[:graph:]"
     [[ "$1" == "-n" ]] && chars="[:alnum:]" && shift
-    < /dev/urandom tr -dc "$chars" | head -c${1:-16}
+    tr </dev/urandom -dc "$chars" | head -c${1:-16}
     echo
 }
 
 gpin() {
-    < /dev/urandom tr -dc '[:digit:]' | head -c${1:-4}
+    tr </dev/urandom -dc '[:digit:]' | head -c${1:-4}
     echo
 }
 
@@ -50,8 +51,8 @@ gpin() {
 pflv() {
     pid=$(pgrep -f flashplayer | tail -l)
     file=$(lsof -p ${pid} | awk \
-	'/\/tmp\/Flash/ {sub(/[rwu]$/, "", $4); print "/proc/" $2 "/fd/" $4}')
-    
+        '/\/tmp\/Flash/ {sub(/[rwu]$/, "", $4); print "/proc/" $2 "/fd/" $4}')
+
     mplayer2 ${file}
 }
 
@@ -69,9 +70,9 @@ qr() {
 # welcome
 welcome() {
     if [[ $(date +%j) == 256 ]]; then
-	echo "Happy programmers' day!"
-    #else
-	#echo "Słowo na $(date +'%j dzień roku %Y'):"
-	#~/dev/scripts/bash/fortunes/urbandictionary.sh
+        echo "Happy programmers' day!"
+        #else
+        #echo "Słowo na $(date +'%j dzień roku %Y'):"
+        #~/dev/scripts/bash/fortunes/urbandictionary.sh
     fi
 }
