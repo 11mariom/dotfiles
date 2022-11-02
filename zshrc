@@ -264,3 +264,10 @@ SAVEHIST=$HISTSIZE
 ##
 # terraform custom options
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+
+##
+# vscode custom settings
+if [[ $TERM_PROGRAM == "vscode" ]]; then
+    unsetopt correct correctall
+    export ENABLE_CORRECTION=false
+fi
