@@ -229,8 +229,11 @@ if [[ $#h -gt 0 ]]; then
 fi
 
 ##
-# k8s completion
+# custom completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# dirty, but does not work other way
+[[ $commands[autorestic] ]] && autorestic completion zsh > ${fpath[1]}/_autorestic  
 
 ##
 # kill completion

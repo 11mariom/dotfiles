@@ -68,3 +68,9 @@ elif command -v batcat 2>&1 >/dev/null; then
     alias catcat="/bin/cat"
     alias cat="batcat"
 fi
+
+##
+# list snapshots
+if command -v autorestic 2>&1 >/dev/null; then
+    alias arestic="autorestic exec -av -- "
+fi
