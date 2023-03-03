@@ -33,7 +33,7 @@ alias tmux="tmux -2"
 alias ln="ln -i"
 alias mv="mv -i"
 
-## 
+##
 # global alias
 alias -g G="| grep"
 alias -g H="| head"
@@ -49,7 +49,7 @@ hash -d torrents="/media/Dane/Torrents"
 
 ##
 # mac aliases
-if [[ `uname` == "Darwin" ]]; then
+if [[ $(uname) == "Darwin" ]]; then
     alias mtr="sudo /usr/local/sbin/mtr"
 fi
 
@@ -73,4 +73,14 @@ fi
 # list snapshots
 if command -v autorestic 2>&1 >/dev/null; then
     alias arestic="autorestic exec -av -- "
+fi
+
+##
+# Docker-based commands
+if ! command -v hugo 2>&1 >/dev/null; then
+    alias hugo="docker run --rm -u $(id -u):$(id -g) -v '${PWD}/src:/src' -it -p 1313:1313 klakegg/hugo:alpine"
+fi
+
+if ! command -v helmfile 2>&1 >/dev/null; then
+    alias helmfile="docker run --rm --net=host -v '${HOME}/.kube:/root/.kube' -v '${HOME}/.config/helm:/root/.config/helm' -v '${PWD}:/wd' --workdir /wd quay.io/roboll/helmfile:v0.144.0 helmfile"
 fi
