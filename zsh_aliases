@@ -1,86 +1,86 @@
 # -*- sh -*-
 ##
 # variable
-_OPTIONS="--color=auto"
+_OPTIONS='--color=auto'
 
 ##
 # alias
-alias b="cd .."
-alias calc="autoload -U zcalc && zcalc"
+alias b='cd ..'
+alias calc='autoload -U zcalc && zcalc'
 alias e=$EDITOR
-alias l="ls $_OPTIONS"
-alias s="su"
-alias x="exit"
-alias zcp="zmv -wC"
-alias zln="zmv -wL"
-alias zmv="zmv -wM"
+alias l='ls $_OPTIONS'
+alias s='su'
+alias x='exit'
+alias zcp='zmv -wC'
+alias zln='zmv -wL'
+alias zmv='zmv -wM'
 
 ##
 # using rsync
-alias cp="rsync -pP"
-alias scp="rsync -pP"
+alias cp='rsync -pP'
+alias scp='rsync -pP'
 
 ##
 # default options
-alias ebuild="FEATURES=-mini-manifest ebuild"
-alias grep="grep $_OPTIONS"
-alias ls="ls $_OPTIONS"
-alias tmux="tmux -2"
+alias ebuild='FEATURES=-mini-manifest ebuild'
+alias grep='grep $_OPTIONS'
+alias ls='ls $_OPTIONS'
+alias tmux='tmux -2'
 
 ##
 # prompt for overwrite
-#alias cp="cp -i"
-alias ln="ln -i"
-alias mv="mv -i"
+#alias cp='cp -i'
+alias ln='ln -i'
+alias mv='mv -i'
 
 ##
 # global alias
-alias -g G="| grep"
-alias -g H="| head"
-alias -g L="| less"
-alias -g T="| tail"
+alias -g G='| grep'
+alias -g H='| head'
+alias -g L='| less'
+alias -g T='| tail'
 
 ##
 # dirs
-hash -d t="~/tmp"
-hash -d D="/media/Dane"
-hash -d cdrom="/media/cdrom"
-hash -d torrents="/media/Dane/Torrents"
+hash -d t='~/tmp'
+hash -d D='/media/Dane'
+hash -d cdrom='/media/cdrom'
+hash -d torrents='/media/Dane/Torrents'
 
 ##
 # mac aliases
-if [[ $(uname) == "Darwin" ]]; then
-    alias mtr="sudo /usr/local/sbin/mtr"
+if [[ $(uname) == 'Darwin' ]]; then
+    alias mtr='sudo /usr/local/sbin/mtr'
 fi
 
 ##
 # use gopass if available
 if command -v gopass 2>&1 >/dev/null; then
-    alias pass="gopass"
+    alias pass='gopass'
 fi
 
 ##
 # use bat/batcat if available
 if command -v bat 2>&1 >/dev/null; then
-    alias catcat="/bin/cat"
-    alias cat="bat"
+    alias catcat='/bin/cat'
+    alias cat='bat'
 elif command -v batcat 2>&1 >/dev/null; then
-    alias catcat="/bin/cat"
-    alias cat="batcat"
+    alias catcat='/bin/cat'
+    alias cat='batcat'
 fi
 
 ##
 # list snapshots
 if command -v autorestic 2>&1 >/dev/null; then
-    alias arestic="autorestic exec -av -- "
+    alias arestic='autorestic exec -av -- '
 fi
 
 ##
 # Docker-based commands
 if ! command -v hugo 2>&1 >/dev/null; then
-    alias hugo="docker run --rm -u $(id -u):$(id -g) -v '${PWD}/src:/src' -it -p 1313:1313 klakegg/hugo:alpine"
+    alias hugo='docker run --rm -u $(id -u):$(id -g) -v '${PWD}/src:/src' -it -p 1313:1313 klakegg/hugo:alpine'
 fi
 
 if ! command -v helmfile 2>&1 >/dev/null; then
-    alias helmfile="docker run --rm --net=host -v '${HOME}/.kube:/root/.kube' -v '${HOME}/.config/helm:/root/.config/helm' -v '${PWD}:/wd' --workdir /wd quay.io/roboll/helmfile:v0.144.0 helmfile"
+    alias helmfile='docker run --rm --net=host -v '${HOME}/.kube:/root/.kube' -v '${HOME}/.config/helm:/root/.config/helm' -v '${PWD}:/wd' --workdir /wd quay.io/roboll/helmfile:v0.144.0 helmfile'
 fi
