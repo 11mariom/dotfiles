@@ -77,6 +77,10 @@ fi
 
 ##
 # Docker-based commands
+if command -v podman 2>&1 >/dev/null && ! command -v docker 2>&1 >/dev/null; then
+    alias docker='podman'
+fi
+
 if ! command -v hugo 2>&1 >/dev/null; then
     hugo() {
         set -x
