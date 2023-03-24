@@ -84,7 +84,10 @@ fi
 if ! command -v hugo 2>&1 >/dev/null; then
     hugo() {
         set -x
-        docker run --rm -u $(id -u):$(id -g) -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine $@
+        # docker run --rm -u $(id -u):$(id -g) -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine $@
+        # user switch not needed in podman, permissions are correct without it
+        # setting it breaks lock acquire
+        podman run --rm -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine $@
         set +x
     }
 fi
