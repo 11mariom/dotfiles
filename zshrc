@@ -287,20 +287,6 @@ zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' cache-path ~/.cache/zsh/compcache
 
 ##
-# ssh-hosts completion
-ssh_hosts=()
-if [[ -r ~/.ssh/config ]]; then
-  ssh_hosts+=($(awk '/^Host/ && ! /\*/{print $2}' ~/.ssh/config))
-fi
-if [[ -r ~/.ssh/known_hosts ]]; then
-  ssh_hosts+=($(awk '!/^\|/{gsub(/(,.*|\[|]:.*)/, "");print $1}' ~/.ssh/known_hosts))
-fi
-if (( $#ssh_hosts )); then
-  zstyle ':completion:*:ssh:*' hosts $ssh_hosts
-  zstyle ':completion:*:slogin:*' hosts $ssh_hosts
-fi
-
-##
 # kill completion (BSD/macOS ps, no --forest)
 zstyle ':completion:*:*:kill:*:processes' list-colors\
                     "=(#b) #([0-9]#)*=0=01;31"
