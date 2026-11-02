@@ -1,22 +1,74 @@
 #!/bin/zsh
 ##
+# human shell: real terminal, not a tool/agent (Claude Code sets CLAUDECODE).
+# Behaviour that prompts, prints or changes command semantics is limited to it.
+typeset -gi human=0
+[[ -t 1 && -z $CLAUDECODE ]] && human=1
+
+##
 # path
 home_bin="$HOME/bin"
 hlocal_bin="$HOME/.local/bin"
-colorgcc="/usr/lib/colorgcc/bin"
-opt_bin="/opt/bin"
-brew_bin="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin"
 
 # homebrew and OS X fixes
 if [[ `uname` == "Darwin" ]]; then
     export LANG=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
 
-    PATH=$brew_bin":"$PATH
-    fpath=($(brew --prefix)/share/zsh-completions $fpath)
+    # hardcoded, `brew --prefix` costs a subprocess on every shell
+    [[ -d /opt/homebrew ]] && brew_prefix=/opt/homebrew || brew_prefix=/usr/local
+
+    PATH="$brew_prefix/opt/coreutils/libexec/gnubin:$brew_prefix/bin:$PATH"
+    [ -d $brew_prefix/share/zsh-completions ] && fpath=($brew_prefix/share/zsh-completions $fpath)
 fi
 
 [ -d ~/.zsh/completion ] && fpath=(~/.zsh/completion $fpath)
+
+# generated completions live outside dotfiles
+zsh_comp_cache="$HOME/.cache/zsh/completions"
+[ -d $zsh_comp_cache ] || mkdir -p $zsh_comp_cache
+fpath=($zsh_comp_cache $fpath)
+
+# home bin
+PATH="$home_bin:$hlocal_bin:$PATH"
+
+# no duplicates in nested shells
+typeset -U path fpath
+export PATH
+
+##
+# generated completions: (re)generate only when missing or the tool got updated
+# usage: _cache_completion <command> <args...>
+_cache_completion() {
+    local name=$1 f="$zsh_comp_cache/_$1"
+    (( $+commands[$name] )) || return
+    [[ -s $f && $f -nt $commands[$name] ]] && return
+    "$@" > $f 2>/dev/null && rm -f ~/.zcompdump*
+}
+_cache_completion kubectl completion zsh
+_cache_completion autorestic completion zsh
+
+##
+# setopt (extendedglob first, compinit check below needs it)
+setopt extendedglob
+setopt autocd              # dirs
+setopt autopushd
+setopt chasedots           # dirs, resolve .. physically
+setopt extendedhistory     # history
+setopt sharehistory
+setopt hist_ignore_all_dups
+setopt hist_ignore_space   # prefix a command with space to keep it out of history
+setopt checkjobs           # jobs
+setopt nobeep              # no beeping
+setopt complete_in_word    # complete
+setopt short_loops         # enable short loops eg: for i in 1 2 3; echo $i
+
+if (( human )); then
+    setopt globdots        # glob: match dotfiles (not for agents, `rm *` would hit .git)
+    setopt correct         # correct
+    setopt printexitvalue  # print exit code if non-zero
+    setopt zle emacs       # line editor, fails without a tty
+fi
 
 ##
 # autoload
@@ -24,7 +76,12 @@ autoload -Uz vcs_info
 autoload -U colors
 colors
 autoload -U compinit
-compinit -i
+# rebuild the completion dump once a day, otherwise trust it
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit -i
+else
+    compinit -C -i
+fi
 autoload edit-command-line
 zle -N edit-command-line
 autoload zmv
@@ -36,47 +93,8 @@ select-word-style normal
 export WORDCHARS='*?_[]~=&;!#$%^(){}<>'
 
 ##
-# setopt
-setopt autocd              # dirs
-setopt autopushd
-setopt chasedots           # glob
-setopt globdots
-setopt extendedglob
-setopt appendhistory       # history
-setopt extendedhistory
-setopt sharehistory
-setopt checkjobs           # jobs
-setopt nobeep              # no beeping
-setopt complete_in_word    # complete
-setopt correct correctall  # correct
-setopt zle emacs
-setopt printexitvalue      # print exit code if non-zero
-setopt short_loops         # enable short loops eg: for i in 1 2 3; echo $i
-
-##
 # export
-if [[ "$HOST" == "GLaDOS" ]]; then
-    export EDITOR="emacsclient-emacs-24 --alternate-editor='' -c -nw "
-else
-    export EDITOR="vim "
-fi
-
-##
-# PATH
-# my defaults
-PATH=$colorgcc":"$PATH":"$opt_bin
-
-# ruby
-if which ruby 2>&1 >/dev/null; then
-    ruby_bin="$(ruby -rrubygems -e 'puts Gem.user_dir')/bin"
-    PATH=$ruby_bin":"$PATH
-fi
-
-# home bin
-PATH=$hlocal_bin":"$PATH
-PATH=$home_bin":"$PATH
-
-export PATH
+export EDITOR="vim"
 
 ##
 # colorful manpages in less
@@ -95,10 +113,11 @@ export GROFF_NO_SGR=1
 [ -f ~/.zsh_functions ] && . ~/.zsh_functions
 
 if [ -f ~/.dircolors-256 ] && [ -f ~/.dircolors-8 ]; then
-    [ $(tput colors) = 256 ] &&\
-       eval $( dircolors -b ~/.dircolors-256 )
-    [ $(tput colors) != 256 ] &&\
-       eval $( dircolors -b ~/.dircolors-8 )
+    if [[ $(tput colors 2>/dev/null) == 256 ]]; then
+        eval $( dircolors -b ~/.dircolors-256 )
+    else
+        eval $( dircolors -b ~/.dircolors-8 )
+    fi
 fi
 
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -129,7 +148,7 @@ case $TERM in
 	    echo -n ${reset_color}
 	}
 	;;
-    **)
+    *)
 	precmd () {
 	    pprecmd
 	}
@@ -163,7 +182,7 @@ pprecmd () {
     terraform_gcp=""
     if [ -f "${PWD}/main.tf" ]; then
       if [ -f "${PWD}/.terraform/environment" ]; then
-        terraform_ws="%F{3}γ `cat "${PWD}/.terraform/environment"`"
+        terraform_ws="%F{3}γ $(<"${PWD}/.terraform/environment")"
       elif [ -d "${PWD}/.terraform" ]; then
 	terraform_ws="%F{3}γ %F{7}default"
       else
@@ -171,8 +190,9 @@ pprecmd () {
       fi
 
       if [[ -f $GOOGLE_APPLICATION_CREDENTIALS ]] \
-       && [[ -z $(find ${PWD}/.terraform/providers -name 'terraform-provider-google*' -print -quit | grep -q '.') ]]; then
-        local project=$(command jq -r .project_id $GOOGLE_APPLICATION_CREDENTIALS || basename $GOOGLE_APPLICATION_CREDENTIALS%.json)
+       && [[ -n $(find "${PWD}/.terraform/providers" -name 'terraform-provider-google*' -print -quit 2>/dev/null) ]]; then
+        local project=$(command jq -r .project_id "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null)
+        [[ -z $project || $project == null ]] && project=${${GOOGLE_APPLICATION_CREDENTIALS:t}%.json}
 
         terraform_gcp=" %F{4}☁ %F{11}$project "
       fi
@@ -218,30 +238,23 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # ssh-hosts completion
 ssh_hosts=()
 if [[ -r ~/.ssh/config ]]; then
-  ssh_hosts=($h $(awk '/^Host/ && ! /\*/{print $2}' ~/.ssh/config))
+  ssh_hosts+=($(awk '/^Host/ && ! /\*/{print $2}' ~/.ssh/config))
 fi
 if [[ -r ~/.ssh/known_hosts ]]; then
-  ssh_hosts=($h $(awk '{gsub(/(,.*|\[|]:.*)/, "");print $1}' ~/.ssh/known_hosts))
+  ssh_hosts+=($(awk '!/^\|/{gsub(/(,.*|\[|]:.*)/, "");print $1}' ~/.ssh/known_hosts))
 fi
-if [[ $#h -gt 0 ]]; then
+if (( $#ssh_hosts )); then
   zstyle ':completion:*:ssh:*' hosts $ssh_hosts
   zstyle ':completion:*:slogin:*' hosts $ssh_hosts
 fi
 
 ##
-# custom completion
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
-
-# dirty, but does not work other way
-[[ $commands[autorestic] ]] && autorestic completion zsh > ${fpath[1]}/_autorestic  
-
-##
-# kill completion
+# kill completion (BSD/macOS ps, no --forest)
 zstyle ':completion:*:*:kill:*:processes' list-colors\
                     "=(#b) #([0-9]#)*=0=01;31"
 zstyle ':completion:*:*:kill:*:processes' command\
-                    "ps -u $USER --forest -o pid,user,cmd"
-zstyle ':completion:*:processes-names' command "ps -u $USER axho command"
+                    "ps -u $USER -o pid,user,command"
+zstyle ':completion:*:processes-names' command "ps -u $USER -o comm="
 
 ##
 # bind
@@ -260,7 +273,7 @@ bindkey -e
 
 ##
 # history
-HISTSIZE=5000
+HISTSIZE=50000
 HISTFILE="$HOME/.zsh_history"
 SAVEHIST=$HISTSIZE
 

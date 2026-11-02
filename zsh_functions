@@ -1,29 +1,30 @@
 # -*- sh -*-
 ##
-# cd == cd + ls
+# cd == cd + ls (only in a terminal, so tools/scripts/agents stay quiet)
 cd() {
     builtin cd "$@" || return
     [[ -t 1 ]] && ls --color="auto"
+    return 0
 }
 
 ##
 # extract
 ext() {
-    if [ -f $1 ]; then
-        case $1 in
-            *.tar.bz2) tar -jxvf $1 ;;
-            *.tar.gz) tar -zxvf $1 ;;
-            *.tar.xz) tar -Jxvf $1 ;;
-            *.bz2) bzip2 -d $1 ;;
-            *.gz) gunzip -d $1 ;;
-            *.tar) tar -xvf $1 ;;
-            *.tgz) tar -zxvf $1 ;;
-            *.tbz2) tar -xvzf $1 ;;
-            *.zip) unzip $1 ;;
-            *.Z) uncompress $1 ;;
-            *.7z) 7z x $1 ;;
-            *.rar) unrar x $1 ;;
-            *.xz) xz -d $1 ;;
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2) tar -jxvf "$1" ;;
+            *.tar.gz) tar -zxvf "$1" ;;
+            *.tar.xz) tar -Jxvf "$1" ;;
+            *.bz2) bzip2 -d "$1" ;;
+            *.gz) gunzip -d "$1" ;;
+            *.tar) tar -xvf "$1" ;;
+            *.tgz) tar -zxvf "$1" ;;
+            *.tbz2) tar -xvzf "$1" ;;
+            *.zip) unzip "$1" ;;
+            *.Z) uncompress "$1" ;;
+            *.7z) 7z x "$1" ;;
+            *.rar) unrar x "$1" ;;
+            *.xz) xz -d "$1" ;;
             *) echo "'$1' Error. Please go away" ;;
         esac
     else
@@ -47,32 +48,11 @@ gpin() {
 }
 
 ##
-# play flash movies
-pflv() {
-    pid=$(pgrep -f flashplayer | tail -l)
-    file=$(lsof -p ${pid} | awk \
-        '/\/tmp\/Flash/ {sub(/[rwu]$/, "", $4); print "/proc/" $2 "/fd/" $4}')
-
-    mplayer2 ${file}
-}
-
-##
 # generate and print qrcode on cli
 qr() {
-    f=$(date +%s)
+    local f="/tmp/qr-$$-$(date +%s).png"
 
-    qrencode "$1" -o "/tmp/$f.png" -s 1
-    icat "/tmp/$f.png"
-    rm "/tmp/$f.png"
-}
-
-##
-# welcome
-welcome() {
-    if [[ $(date +%j) == 256 ]]; then
-        echo "Happy programmers' day!"
-        #else
-        #echo "Słowo na $(date +'%j dzień roku %Y'):"
-        #~/dev/scripts/bash/fortunes/urbandictionary.sh
-    fi
+    qrencode "$1" -o "$f" -s 1
+    icat "$f"
+    rm "$f"
 }

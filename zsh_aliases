@@ -16,22 +16,32 @@ alias zln='zmv -wL'
 alias zmv='zmv -wM'
 
 ##
-# using rsync
-alias cp='rsync -pP'
-alias scp='rsync -pP'
-
-##
 # default options
-alias ebuild='FEATURES=-mini-manifest ebuild'
 alias grep='grep $_OPTIONS'
 alias ls='ls $_OPTIONS'
 alias tmux='tmux -2'
 
 ##
-# prompt for overwrite
-#alias cp='cp -i'
-alias ln='ln -i'
-alias mv='mv -i'
+# only for humans in a real terminal: these change semantics (cp/scp are rsync,
+# cp -R/-i/-f differ), prompt (-i) or decorate output (bat), which breaks agents/scripts
+if (( human )); then
+    # using rsync
+    alias cp='rsync -pP'
+    alias scp='rsync -pP'
+
+    # prompt for overwrite
+    alias ln='ln -i'
+    alias mv='mv -i'
+
+    # use bat/batcat if available
+    if command -v bat >/dev/null 2>&1; then
+        alias catcat='/bin/cat'
+        alias cat='bat'
+    elif command -v batcat >/dev/null 2>&1; then
+        alias catcat='/bin/cat'
+        alias cat='batcat'
+    fi
+fi
 
 ##
 # global alias
@@ -43,59 +53,52 @@ alias -g T='| tail'
 ##
 # dirs
 hash -d t='~/tmp'
-hash -d D='/media/Dane'
-hash -d cdrom='/media/cdrom'
-hash -d torrents='/media/Dane/Torrents'
 
 ##
 # mac aliases
-if [[ $(uname) == 'Darwin' ]]; then
-    alias mtr='sudo /usr/local/sbin/mtr'
+if [[ $(uname) == 'Darwin' && -x $brew_prefix/sbin/mtr ]]; then
+    alias mtr="sudo $brew_prefix/sbin/mtr"
 fi
 
 ##
 # use gopass if available
-if command -v gopass 2>&1 >/dev/null; then
+if command -v gopass >/dev/null 2>&1; then
     alias pass='gopass'
 fi
 
 ##
-# use bat/batcat if available
-if command -v bat 2>&1 >/dev/null; then
-    alias catcat='/bin/cat'
-    alias cat='bat'
-elif command -v batcat 2>&1 >/dev/null; then
-    alias catcat='/bin/cat'
-    alias cat='batcat'
-fi
-
-##
 # list snapshots
-if command -v autorestic 2>&1 >/dev/null; then
+if command -v autorestic >/dev/null 2>&1; then
     alias arestic='autorestic exec -av -- '
 fi
 
 ##
 # Docker-based commands
-if command -v podman 2>&1 >/dev/null && ! command -v docker 2>&1 >/dev/null; then
+if command -v podman >/dev/null 2>&1 && ! command -v docker >/dev/null 2>&1; then
     alias docker='podman'
 fi
 
-if ! command -v hugo 2>&1 >/dev/null; then
+if ! command -v hugo >/dev/null 2>&1; then
     hugo() {
         set -x
-        # docker run --rm -u $(id -u):$(id -g) -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine $@
+        # docker run --rm -u $(id -u):$(id -g) -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine "$@"
         # user switch not needed in podman, permissions are correct without it
         # setting it breaks lock acquire
-        podman run --rm -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine $@
+        podman run --rm -v "${PWD}/src:/src" -it -p 1313:1313 klakegg/hugo:alpine "$@"
         set +x
     }
 fi
 
-if ! command -v helmfile 2>&1 >/dev/null; then
+if ! command -v helmfile >/dev/null 2>&1; then
     helmfile() {
         set -x
-        docker run --rm -v "${HOME}/.kube:/helm/.kube" -v "${HOME}/.config/helm:/helm/.config/helm" -v "${PWD}:/wd" --workdir /wd ghcr.io/helmfile/helmfile:v0.151.0 helmfile $@
+        docker run --rm -v "${HOME}/.kube:/helm/.kube" -v "${HOME}/.config/helm:/helm/.config/helm" -v "${PWD}:/wd" --workdir /wd ghcr.io/helmfile/helmfile:v0.151.0 helmfile "$@"
         set +x
     }
 fi
+
+terraform-amd64() {
+        set -x
+        podman run --rm --platform linux/amd64 -v "${HOME}/.aws:/root/.aws" -v "${PWD}:/wd" --workdir /wd hashicorp/terraform:light "$@"
+        set +x
+}
