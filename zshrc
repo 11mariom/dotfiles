@@ -53,10 +53,13 @@ _cache_completion autorestic completion zsh
 setopt extendedglob
 setopt autocd              # dirs
 setopt autopushd
+setopt pushd_ignore_dups   # dirs, one stack entry per directory
 setopt chasedots           # dirs, resolve .. physically
+setopt interactive_comments # allow `# comment` on the command line (pasted runbooks)
 setopt extendedhistory     # history
 setopt sharehistory
 setopt hist_ignore_all_dups
+setopt hist_reduce_blanks  # trim superfluous blanks so near-identical entries dedupe
 setopt hist_ignore_space   # prefix a command with space to keep it out of history
 setopt checkjobs           # jobs
 setopt nobeep              # no beeping
@@ -68,6 +71,8 @@ if (( human )); then
     setopt correct         # correct
     setopt printexitvalue  # print exit code if non-zero
     setopt zle emacs       # line editor, fails without a tty
+    setopt no_flow_control # tty: free ^S/^Q (^S = forward search next to ^R)
+    setopt hist_verify     # history: show !! / !$ expansion for editing instead of running it
 fi
 
 ##
@@ -124,39 +129,22 @@ fi
 
 ##
 # term dependent options
+# hooks (add-zsh-hook, so plugins can add theirs too; run in registration order)
+autoload -Uz add-zsh-hook
+
+_title_precmd() { printf '\033]0;%s\007' "$PWD" }
+_title_preexec() { print -Pn "\e]0;${2//\%/%%}\a" }
+_reset_color_preexec() { echo -n ${reset_color} }
+
+add-zsh-hook precmd pprecmd
 case $TERM in
-    xterm*)
-	precmd () {
-	    pprecmd
-	    title="$(pwd)"
-	    printf \\033]0\;\%s\\007 "${title}"
-	}
-	preexec () {
-	    print -Pn "\e]0;$2\a"
-	    echo -n ${reset_color}
-	}
-	;;
-    screen*)
-	export TERM=screen-256color
-	precmd () {
-	    pprecmd
-	    title="$(pwd)"
-	    printf \\033]0\;\%s\\007 "${title}"
-	}
-	preexec () {
-	    print -Pn "\e]0;$2\a\e[0m"
-	    echo -n ${reset_color}
-	}
-	;;
-    *)
-	precmd () {
-	    pprecmd
-	}
-	preexec () {
-	    echo -n ${reset_color}
-	}
+    xterm*|screen*)
+	[[ $TERM == screen* ]] && export TERM=screen-256color
+	add-zsh-hook precmd _title_precmd
+	add-zsh-hook preexec _title_preexec
 	;;
 esac
+add-zsh-hook preexec _reset_color_preexec
 
 ##
 # git info for prompt
@@ -233,6 +221,10 @@ zstyle ':completion:*' add-space true
 zstyle ':completion:*' file-sort name
 zstyle ':completion:*:expand:*' tag-order all-expansions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# cache results of slow completion sources (hosts, packages, ...)
+[ -d ~/.cache/zsh/compcache ] || mkdir -p ~/.cache/zsh/compcache
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path ~/.cache/zsh/compcache
 
 ##
 # ssh-hosts completion
@@ -270,6 +262,15 @@ bindkey '^[f'   forward-char
 bindkey '^N'    edit-command-line
 bindkey '^K'    kill-line
 bindkey -e
+
+##
+# fzf: ^R fuzzy history, ^T file picker, Alt-C cd (after bindkey -e, human shells only)
+# `fzf --zsh` output is cached, it costs a subprocess otherwise
+if (( human && $+commands[fzf] )); then
+    fzf_init="$HOME/.cache/zsh/fzf.zsh"
+    [[ -s $fzf_init && $fzf_init -nt $commands[fzf] ]] || fzf --zsh > $fzf_init 2>/dev/null
+    [[ -s $fzf_init ]] && . $fzf_init
+fi
 
 ##
 # history
