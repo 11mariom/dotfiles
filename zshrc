@@ -345,6 +345,29 @@ bindkey '^K'    kill-line
 bindkey -e
 
 ##
+# up/down walk only this session's history; everything else (fzf ^R, new shells)
+# still sees the shared history thanks to share_history
+if (( human )); then
+    up-line-or-local-history () {
+        zle set-local-history 1
+        zle up-line-or-history
+        zle set-local-history 0
+    }
+    down-line-or-local-history () {
+        zle set-local-history 1
+        zle down-line-or-history
+        zle set-local-history 0
+    }
+    zle -N up-line-or-local-history
+    zle -N down-line-or-local-history
+    bindkey '^[[A' up-line-or-local-history
+    bindkey '^[OA' up-line-or-local-history
+    bindkey '^P'   up-line-or-local-history
+    bindkey '^[[B' down-line-or-local-history
+    bindkey '^[OB' down-line-or-local-history
+fi
+
+##
 # fzf: ^R fuzzy history, ^T file picker, Alt-C cd (after bindkey -e, human shells only)
 # `fzf --zsh` output is cached, it costs a subprocess otherwise
 if (( human && $+commands[fzf] )); then
