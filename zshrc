@@ -147,7 +147,10 @@ esac
 add-zsh-hook preexec _reset_color_preexec
 
 ##
-# git info for prompt
+# git info for prompt, shown as [branch ✗ ✔ ❤]
+#   ✗ (yellow)  unstaged changes (modified/deleted, not yet `git add`ed)
+#   ✔ (green)   staged changes (in the index, ready to commit)
+#   ❤ (red)     untracked files (new files git does not know about yet)
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr " %F{3}✗"
 zstyle ':vcs_info:*' stagedstr " %F{2}✔"
@@ -156,13 +159,69 @@ zstyle ':vcs_info:*' branchformat "%b:%r"
 
 ##
 # prompt
-pprecmd () {
+# The git segment is the only slow part (vcs_info + untracked check), so it is
+# computed in the background and filled into RPROMPT when ready; everything else
+# is drawn instantly. Nothing runs outside a git work tree.
+
+# prints the git segment, runs in a background subshell
+_git_segment () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
 	    zstyle ':vcs_info:*' formats " %F{12}[%b%c%u%F{12}]"
     } else {
 	    zstyle ':vcs_info:*' formats " %F{12}[%b%c%u %F{9}❤%F{12}]"
     }
     vcs_info
+    print -rn -- "$vcs_info_msg_0_"
+}
+
+_in_git_tree () {
+    local d=$PWD
+    while [[ $d != / ]]; do
+        [[ -e $d/.git ]] && return 0
+        d=${d:h}
+    done
+    return 1
+}
+
+# (re)build RPROMPT from the parts computed by pprecmd and the async git segment
+_build_rprompt () {
+    RPROMPT="%{$fg[black]%}%m $_rp_terraform$_rp_git ${_rp_face}%{$fg_bold[white]%}"
+}
+
+# zle -F handler: the background job has produced (or closed) its output
+_git_segment_done () {
+    local fd=$1 seg=""
+    zle -F $fd
+    IFS= read -r -d '' -u $fd seg
+    exec {fd}<&-
+    [[ $fd == ${_rp_git_fd-} ]] || return    # stale result of an older prompt
+    unset _rp_git_fd
+    _rp_git=$seg
+    _build_rprompt
+    zle && zle reset-prompt
+}
+
+pprecmd () {
+    # freeze the exit status now, %? is not reliable after an async redraw
+    local last=$?
+    if (( last == 0 )); then
+        _rp_face="%{$fg_bold[green]%}:)"
+    else
+        _rp_face="%{$fg_bold[red]%};("
+    fi
+
+    # drop a still-running job of the previous prompt
+    # (exec {var} makes it an integer, so test with ${+var} and unset, never "")
+    if (( ${+_rp_git_fd} )); then
+        zle -F $_rp_git_fd 2>/dev/null
+        exec {_rp_git_fd}<&- 2>/dev/null
+        unset _rp_git_fd
+    fi
+    _rp_git=""
+    if _in_git_tree; then
+        exec {_rp_git_fd}< <(_git_segment)
+        zle -F $_rp_git_fd _git_segment_done
+    fi
 
     # get terraform workspace name for prompt
     terraform_ws=""
@@ -186,7 +245,8 @@ pprecmd () {
       fi
     fi
 
-    RPROMPT="%{$fg[black]%}%m $terraform_ws$terraform_gcp$vcs_info_msg_0_ %(?,%{$fg_bold[green]%}:),%{$fg_bold[red]%};()%{$fg_bold[white]%}"
+    _rp_terraform="$terraform_ws$terraform_gcp"
+    _build_rprompt
 }
 
 PROMPT="%{$bg[black]$fg_bold[white]%}%3~ %(!,%{$fg_bold[red]%}#,%{$fg_bold[green]%}\$)%{$reset_color%} "
