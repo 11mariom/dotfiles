@@ -266,11 +266,11 @@ zstyle ':completion:*:-command-:*:' verbose "no"
 zstyle ':completion:*:approximate:::' max-errors 3
 zstyle ':completion:*:descriptions' format "%B-- %d --%b"
 zstyle ':completion:*:messages' format\
-                    "%B--${GREEN} %d ${WHITE}--%b"
+                    "%B--%F{green} %d %F{white}--%f%b"
 zstyle ':completion:*:warnings' format\
-                    "%B--${RED} no match for: %d ${WHITE}--%b"
+                    "%B--%F{red} no match for: %d %F{white}--%f%b"
 zstyle ':completion:*:corrections' format\
-                    "%B--${YELLOW} %d ${WHITE}-- (errors %e)%b"
+                    "%B--%F{yellow} %d %F{white}-- (errors %e)%f%b"
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:manuals' separate-sections "yes"
 zstyle ':completion:*:manuals.(^1*)' insert-sections "yes"
