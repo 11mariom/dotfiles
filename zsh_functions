@@ -2,8 +2,8 @@
 ##
 # cd == cd + ls
 cd() {
-    builtin cd $*
-    ls --color="auto"
+    builtin cd "$@" || return
+    [[ -t 1 ]] && ls --color="auto"
 }
 
 ##
