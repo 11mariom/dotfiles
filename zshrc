@@ -117,6 +117,15 @@ export GROFF_NO_SGR=1
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
 [ -f ~/.zsh_functions ] && . ~/.zsh_functions
 
+# machine-local overrides, not in dotfiles (site-specific names etc.)
+kube_prefix_strip=()           # prefixes dropped from the prompt's kube context
+kube_prod_pattern='*prod*'     # contexts matching this get $kube_prod_style
+kube_color='%F{109}'           # prompt color of the kube context name
+kube_prod_style='%F{203}%U'    # name of a prod context: soft red, underlined
+kube_qa_pattern='*qa*'         # qa contexts get $kube_qa_style (prod wins over qa)
+kube_qa_style='%F{214}%U'      # name of a qa context: amber, underlined
+[ -f ~/.zsh_local ] && . ~/.zsh_local
+
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ##
@@ -176,7 +185,41 @@ _in_git_tree () {
 
 # (re)build RPROMPT from the parts computed by pprecmd and the async git segment
 _build_rprompt () {
-    RPROMPT="%{$fg[black]%}%m $_rp_terraform$_rp_git ${_rp_face}%{$fg_bold[white]%}"
+    RPROMPT="%{$fg[black]%}%m $_rp_kube$_rp_terraform$_rp_git ${_rp_face}%{$fg_bold[white]%}"
+}
+
+# kubectl context, read from the kubeconfig file (no kubectl fork), shown as
+# "⎈ name". The glyph tells the privilege: red = admin, green = readonly,
+# otherwise like the name. The name is $kube_color, or $kube_prod_style for prod.
+_kube_segment () {
+    _rp_kube=""
+    # like kubectl: KUBECONFIG may list several files, the first one that sets a context wins
+    local -a files=( ${(s.:.)KUBECONFIG} )
+    (( $#files )) || files=( $HOME/.kube/config )
+    local f ctx=""
+    for f in $files; do
+        [[ -r $f ]] || continue
+        ctx=${(M)${(f)"$(<$f)"}:#current-context:*}
+        ctx=${${ctx#current-context:}//[\"\' ]/}
+        [[ -n $ctx ]] && break
+    done
+    [[ -n $ctx ]] || return
+
+    ctx=${ctx##*/}                          # arn:aws:eks:...:cluster/name -> name
+    ctx=${ctx//\%/%%}
+    local p g=$kube_color c=$kube_color
+    local -a tok
+    for p in $kube_prefix_strip; do ctx=${ctx#$p}; done
+    tok=( ${(s:-:)ctx} )
+    (( ${tok[(Ie)admin]} ))    && g='%F{red}'      # glyph = privilege
+    (( ${tok[(Ie)readonly]} )) && g='%F{green}'
+    # name = environment
+    if [[ $ctx == ${~kube_prod_pattern} ]]; then
+        c=$kube_prod_style
+    elif [[ $ctx == ${~kube_qa_pattern} ]]; then
+        c=$kube_qa_style
+    fi
+    _rp_kube="${g}⎈ ${c}${ctx}%u%f%k%b "
 }
 
 # zle -F handler: the background job has produced (or closed) its output
@@ -237,6 +280,7 @@ pprecmd () {
     fi
 
     _rp_terraform="$terraform_ws$terraform_gcp"
+    _kube_segment
     _build_rprompt
 }
 
