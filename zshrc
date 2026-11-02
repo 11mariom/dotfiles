@@ -68,7 +68,7 @@ setopt short_loops         # enable short loops eg: for i in 1 2 3; echo $i
 
 if (( human )); then
     setopt globdots        # glob: match dotfiles (not for agents, `rm *` would hit .git)
-    setopt correct         # correct
+    setopt correct correctall  # correct commands and arguments
     setopt printexitvalue  # print exit code if non-zero
     setopt zle emacs       # line editor, fails without a tty
     setopt no_flow_control # tty: free ^S/^Q (^S = forward search next to ^R)
@@ -117,14 +117,6 @@ export GROFF_NO_SGR=1
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
 [ -f ~/.zsh_functions ] && . ~/.zsh_functions
 
-if [ -f ~/.dircolors-256 ] && [ -f ~/.dircolors-8 ]; then
-    if [[ $(tput colors 2>/dev/null) == 256 ]]; then
-        eval $( dircolors -b ~/.dircolors-256 )
-    else
-        eval $( dircolors -b ~/.dircolors-8 )
-    fi
-fi
-
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ##
@@ -155,7 +147,6 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr " %F{3}✗"
 zstyle ':vcs_info:*' stagedstr " %F{2}✔"
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' branchformat "%b:%r"
 
 ##
 # prompt
@@ -332,5 +323,4 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 # vscode custom settings
 if [[ $TERM_PROGRAM == "vscode" ]]; then
     unsetopt correct correctall
-    export ENABLE_CORRECTION=false
 fi
