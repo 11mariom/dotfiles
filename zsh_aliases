@@ -92,7 +92,7 @@ fi
 if ! command -v helmfile >/dev/null 2>&1; then
     helmfile() {
         set -x
-        docker run --rm -v "${HOME}/.kube:/helm/.kube" -v "${HOME}/.config/helm:/helm/.config/helm" -v "${PWD}:/wd" --workdir /wd ghcr.io/helmfile/helmfile:v0.151.0 helmfile "$@"
+        docker run --rm -v "${HOME}/.kube:/helm/.kube" -v "${HOME}/.config/helm:/helm/.config/helm" -v "${PWD}:/wd" --workdir /wd ghcr.io/helmfile/helmfile:v1.8.2 helmfile "$@"
         set +x
     }
 fi
