@@ -69,6 +69,7 @@ setopt short_loops         # enable short loops eg: for i in 1 2 3; echo $i
 if (( human )); then
     setopt globdots        # glob: match dotfiles (not for agents, `rm *` would hit .git)
     setopt correct correctall  # correct commands and arguments
+    CORRECT_IGNORE_FILE='.*' # … but never suggest dotfiles
     setopt printexitvalue  # print exit code if non-zero
     setopt zle emacs       # line editor, fails without a tty
     setopt no_flow_control # tty: free ^S/^Q (^S = forward search next to ^R)
