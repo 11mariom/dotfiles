@@ -77,6 +77,10 @@ if (( human )); then
 fi
 
 ##
+# Feature flag for Nerd Font glyphs (0 = plain unicode/ASCII, 1 = Nerd Font icons)
+typeset -g HAS_NERD_FONT=${HAS_NERD_FONT:-0}
+
+##
 # autoload
 autoload -Uz vcs_info
 autoload -U colors
@@ -130,6 +134,26 @@ kube_qa_style='%F{214}%U'      # name of a qa context: amber, underlined
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ##
+# icon sets: Nerd Font vs. plain unicode fallback
+if (( HAS_NERD_FONT )); then
+    GIT_ICON="" # nf-cod-git_branch
+    GIT_UNTRACKED_ICON="" # nf-cod-new_file
+    GIT_STAGED_ICON="" # nf-fa-file "✔"
+    GIT_UNSTAGED_ICON="" # nf-cod-file "✗"
+    KUBE_ICON="󱃾" # nf-md-kubernetes
+    TF_ICON="󱁢" # nf-md-terraform
+    GCP_ICON="󱇶" # nf-md-google_cloud
+else
+    GIT_ICON="⎇"
+    GIT_UNTRACKED_ICON="❤"
+    GIT_STAGED_ICON="✔"
+    GIT_UNSTAGED_ICON="✗"
+    KUBE_ICON="⎈"
+    TF_ICON="γ"
+    GCP_ICON="☁"
+fi
+
+##
 # term dependent options
 # hooks (add-zsh-hook, so plugins can add theirs too; run in registration order)
 autoload -Uz add-zsh-hook
@@ -149,13 +173,13 @@ esac
 add-zsh-hook preexec _reset_color_preexec
 
 ##
-# git info for prompt, shown as [branch ✗ ✔ ❤]
+# git info for prompt, shown as "<git_icon> <branch> <git_status>"
 #   ✗ (yellow)  unstaged changes (modified/deleted, not yet `git add`ed)
 #   ✔ (green)   staged changes (in the index, ready to commit)
 #   ❤ (red)     untracked files (new files git does not know about yet)
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr " %F{3}✗"
-zstyle ':vcs_info:*' stagedstr " %F{2}✔"
+zstyle ':vcs_info:*' unstagedstr " %F{3}${GIT_UNSTAGED_ICON}"
+zstyle ':vcs_info:*' stagedstr " %F{2}${GIT_STAGED_ICON}"
 zstyle ':vcs_info:*' enable git
 
 ##
@@ -167,9 +191,9 @@ zstyle ':vcs_info:*' enable git
 # prints the git segment, runs in a background subshell
 _git_segment () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
-	    zstyle ':vcs_info:*' formats " %F{12}[%b%c%u%F{12}]"
+	    zstyle ':vcs_info:*' formats " %F{12}${GIT_ICON} %b%c%u%F{12}"
     } else {
-	    zstyle ':vcs_info:*' formats " %F{12}[%b%c%u %F{9}❤%F{12}]"
+	    zstyle ':vcs_info:*' formats " %F{12}${GIT_ICON} %b%c%u %F{9}${GIT_UNTRACKED_ICON}%F{12}"
     }
     vcs_info
     print -rn -- "$vcs_info_msg_0_"
@@ -220,7 +244,7 @@ _kube_segment () {
     elif [[ $ctx == ${~kube_qa_pattern} ]]; then
         c=$kube_qa_style
     fi
-    _rp_kube="${g}⎈ ${c}${ctx}%u%f%k%b "
+    _rp_kube="${g}${KUBE_ICON} ${c}${ctx}%u%f%k%b "
 }
 
 # zle -F handler: the background job has produced (or closed) its output
@@ -264,11 +288,11 @@ pprecmd () {
     terraform_gcp=""
     if [ -f "${PWD}/main.tf" ]; then
       if [ -f "${PWD}/.terraform/environment" ]; then
-        terraform_ws="%F{3}γ $(<"${PWD}/.terraform/environment")"
+        terraform_ws="%F{3}${TF_ICON} $(<"${PWD}/.terraform/environment")"
       elif [ -d "${PWD}/.terraform" ]; then
-	terraform_ws="%F{3}γ %F{7}default"
+	terraform_ws="%F{3}${TF_ICON} %F{7}default"
       else
-        terraform_ws="%F{3}γ %F{1}no init"
+        terraform_ws="%F{3}${TF_ICON} %F{1}no init"
       fi
 
       if [[ -f $GOOGLE_APPLICATION_CREDENTIALS ]] \
@@ -276,7 +300,7 @@ pprecmd () {
         local project=$(command jq -r .project_id "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null)
         [[ -z $project || $project == null ]] && project=${${GOOGLE_APPLICATION_CREDENTIALS:t}%.json}
 
-        terraform_gcp=" %F{4}☁ %F{11}$project "
+        terraform_gcp=" %F{4}${GCP_ICON} %F{11}$project "
       fi
     fi
 
