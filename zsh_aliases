@@ -41,6 +41,11 @@ if (( human )); then
         alias catcat='/bin/cat'
         alias cat='batcat'
     fi
+
+    # use eza if available
+    if command -v eza >/dev/null 2>&1; then
+	alias ls='eza --git --git-repos -h'
+    fi
 fi
 
 ##
