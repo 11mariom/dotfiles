@@ -191,9 +191,9 @@ zstyle ':vcs_info:*' enable git
 # prints the git segment, runs in a background subshell
 _git_segment () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
-	    zstyle ':vcs_info:*' formats " %F{12}${GIT_ICON} %b%c%u%F{12}"
+	    zstyle ':vcs_info:*' formats "%F{12}${GIT_ICON} %b%c%u%F{12}"
     } else {
-	    zstyle ':vcs_info:*' formats " %F{12}${GIT_ICON} %b%c%u %F{9}${GIT_UNTRACKED_ICON}%F{12}"
+	    zstyle ':vcs_info:*' formats "%F{12}${GIT_ICON} %b%c%u %F{9}${GIT_UNTRACKED_ICON}%F{12}"
     }
     vcs_info
     print -rn -- "$vcs_info_msg_0_"
