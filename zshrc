@@ -210,7 +210,7 @@ _in_git_tree () {
 
 # (re)build RPROMPT from the parts computed by pprecmd and the async git segment
 _build_rprompt () {
-    RPROMPT="%{$fg[black]%}%m $_rp_kube$_rp_terraform$_rp_git ${_rp_face}%{$fg_bold[white]%}"
+    RPROMPT="%{$fg_bold[black]%}%m $_rp_kube$_rp_terraform$_rp_git ${_rp_face}%{$fg_bold[white]%}"
 }
 
 # kubectl context, read from the kubeconfig file (no kubectl fork), shown as
